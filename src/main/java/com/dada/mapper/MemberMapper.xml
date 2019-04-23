@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dada.dao.MemberMapper">
+	<resultMap id="BaseResultMap" type="com.dada.entity.Member">
+		<result column="id" jdbcType="VARCHAR" property="id" />
+		<result column="member_no" jdbcType="VARCHAR" property="memberNo" />
+		<result column="realname" jdbcType="VARCHAR" property="realname" />
+		<result column="password" jdbcType="VARCHAR" property="password" />
+		<result column="head_url" jdbcType="VARCHAR" property="headUrl" />
+		<result column="id_card" jdbcType="VARCHAR" property="idCard" />
+		<result column="phone" jdbcType="VARCHAR" property="phone" />
+		<result column="email" jdbcType="VARCHAR" property="email" />
+		<result column="token" jdbcType="VARCHAR" property="token" />
+		<result column="login_ip" jdbcType="VARCHAR" property="loginIp" />
+		<result column="last_time" jdbcType="TIMESTAMP" property="lastTime" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+		<result column="creator_id" jdbcType="VARCHAR" property="creatorId" />
+		<result column="modifier_id" jdbcType="VARCHAR" property="modifierId" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+	</resultMap>
+	<!-- 用户登录 -->
+	<select id="login" resultMap="BaseResultMap" parameterType="string">
+		select * from member where member_no = #{member_no}
+	</select>
+
+	<!-- 修改用户信息 -->
+	<update id="updateInfo" parameterType="com.dada.entity.Member">
+		update member set
+		realname=#{realname},phone=#{phone},email=#{email},remark=#{remark}
+		where id=#{id}
+	</update>
+
+	<!-- 修改用户密码 -->
+	<update id="updatePassword" parameterType="com.dada.entity.Member">
+		update member set
+		password=#{password}
+		where member_no=#{memberNo}
+	</update>
+
+	<!-- 查询 -->
+	<select id="selectAllInfo" resultMap="BaseResultMap"
+		parameterType="com.dada.entity.Member">
+		select * from member where 1=1
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="memberNo != null">
+			and member_no = #{memberNo}
+		</if>
+		<if test="realname != null">
+			and realname = #{realname}
+		</if>
+		<if test="password != null">
+			and password = #{password}
+		</if>
+		<if test="headUrl != null">
+			and head_url = #{headUrl}
+		</if>
+		<if test="idCard != null">
+			and id_card = #{idCard}
+		</if>
+		<if test="phone != null">
+			and phone = #{phone}
+		</if>
+		<if test="email != null">
+			and email = #{email}
+		</if>
+		<if test="token != null">
+			and token = #{token}
+		</if>
+		<if test="loginIp != null">
+			and login_ip = #{loginIp}
+		</if>
+		<if test="lastTime != null">
+			and last_time = #{lastTime}
+		</if>
+		<if test="status != null">
+			and status = #{status}
+		</if>
+		<if test="remark != null">
+			and remark = #{remark}
+		</if>
+		<if test="isDeleted != null">
+			and is_deleted = #{isDeleted}
+		</if>
+		<if test="creatorId != null">
+			and creator_id = #{creatorId}
+		</if>
+		<if test="modifierId != null">
+			and modifier_id = #{modifierId}
+		</if>
+		<if test="createTime != null">
+			and create_time = #{createTime}
+		</if>
+		<if test="modifyTime != null">
+			and modify_time = #{modifyTime}
+		</if>
+	</select>
+
+	<insert id="insert" parameterType="com.dada.entity.Member">
+		insert into member (id,
+		member_no, realname,
+		password, head_url, id_card,
+		phone, token,
+		login_ip,
+		last_time, status, remark,
+		is_deleted, creator_id,
+		modifier_id,
+		create_time, modify_time)
+		values (#{id,jdbcType=VARCHAR},
+		#{memberNo,jdbcType=VARCHAR},
+		#{realname,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR}, #{headUrl,jdbcType=VARCHAR},
+		#{idCard,jdbcType=VARCHAR},
+		#{phone,jdbcType=VARCHAR},
+		#{email,jdbcType=VARCHAR},
+		#{token,jdbcType=VARCHAR},
+		#{loginIp,jdbcType=VARCHAR},
+		#{lastTime,jdbcType=TIMESTAMP},
+		#{status,jdbcType=INTEGER},
+		#{remark,jdbcType=VARCHAR},
+		#{isDeleted,jdbcType=BIT},
+		#{creatorId,jdbcType=VARCHAR},
+		#{modifierId,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{modifyTime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.dada.entity.Member">
+		insert into member
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="memberNo != null">
+				member_no,
+			</if>
+			<if test="realname != null">
+				realname,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="headUrl != null">
+				head_url,
+			</if>
+			<if test="idCard != null">
+				id_card,
+			</if>
+			<if test="phone != null">
+				phone,
+			</if>
+			<if test="email != null">
+				email,
+			</if>
+			<if test="token != null">
+				token,
+			</if>
+			<if test="loginIp != null">
+				login_ip,
+			</if>
+			<if test="lastTime != null">
+				last_time,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="isDeleted != null">
+				is_deleted,
+			</if>
+			<if test="creatorId != null">
+				creator_id,
+			</if>
+			<if test="modifierId != null">
+				modifier_id,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="modifyTime != null">
+				modify_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="memberNo != null">
+				#{memberNo,jdbcType=VARCHAR},
+			</if>
+			<if test="realname != null">
+				#{realname,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="headUrl != null">
+				#{headUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="idCard != null">
+				#{idCard,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="token != null">
+				#{token,jdbcType=VARCHAR},
+			</if>
+			<if test="loginIp != null">
+				#{loginIp,jdbcType=VARCHAR},
+			</if>
+			<if test="lastTime != null">
+				#{lastTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="isDeleted != null">
+				#{isDeleted,jdbcType=BIT},
+			</if>
+			<if test="creatorId != null">
+				#{creatorId,jdbcType=VARCHAR},
+			</if>
+			<if test="modifierId != null">
+				#{modifierId,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyTime != null">
+				#{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+</mapper>

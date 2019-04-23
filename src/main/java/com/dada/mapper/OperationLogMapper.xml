@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dada.dao.OperationLogMapper">
+  <resultMap id="BaseResultMap" type="com.dada.entity.OperationLog">
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="member_id" jdbcType="VARCHAR" property="memberId" />
+    <result column="member_name" jdbcType="VARCHAR" property="memberName" />
+    <result column="access_ip" jdbcType="VARCHAR" property="accessIp" />
+    <result column="access_uri" jdbcType="VARCHAR" property="accessUri" />
+    <result column="operation" jdbcType="VARCHAR" property="operation" />
+    <result column="operation_type" jdbcType="VARCHAR" property="operationType" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <insert id="insert" parameterType="com.dada.entity.OperationLog">
+    insert into operation_log (id, member_id, member_name, 
+      access_ip, access_uri, operation, 
+      operation_type, remark, create_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{memberId,jdbcType=VARCHAR}, #{memberName,jdbcType=VARCHAR}, 
+      #{accessIp,jdbcType=VARCHAR}, #{accessUri,jdbcType=VARCHAR}, #{operation,jdbcType=VARCHAR}, 
+      #{operationType,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dada.entity.OperationLog">
+    insert into operation_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="memberId != null">
+        member_id,
+      </if>
+      <if test="memberName != null">
+        member_name,
+      </if>
+      <if test="accessIp != null">
+        access_ip,
+      </if>
+      <if test="accessUri != null">
+        access_uri,
+      </if>
+      <if test="operation != null">
+        operation,
+      </if>
+      <if test="operationType != null">
+        operation_type,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=VARCHAR},
+      </if>
+      <if test="memberName != null">
+        #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="accessIp != null">
+        #{accessIp,jdbcType=VARCHAR},
+      </if>
+      <if test="accessUri != null">
+        #{accessUri,jdbcType=VARCHAR},
+      </if>
+      <if test="operation != null">
+        #{operation,jdbcType=VARCHAR},
+      </if>
+      <if test="operationType != null">
+        #{operationType,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>
