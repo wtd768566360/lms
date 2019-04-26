@@ -3,6 +3,8 @@
  */
 package com.dada.service;
 
+import java.util.List;
+
 import com.dada.entity.Member;
 
 /**
@@ -20,5 +22,15 @@ public interface IMemberService {
 	boolean updatePassword(Member member);
 
 	boolean removeMemberExit(String memberNo, String realname);
+
+	Member addMember(Member member);
+
+	List<Member> selectConditionsAllMamber(Member member, String page,String limit);
+
+	int selectConditionsAllMamberNumber(Member member);
+
+	boolean inspectionOldPwd(String member_no, String password);
+
+	boolean unlock(String member_no, String password);
 
 }

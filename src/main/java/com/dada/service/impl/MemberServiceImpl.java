@@ -22,7 +22,6 @@ import com.dada.entity.OperationLog;
 import com.dada.service.ILoginLogService;
 import com.dada.service.IMemberService;
 import com.dada.service.IOperationLogService;
-import com.dada.utils.DateUtils;
 import com.dada.utils.IPUtils;
 import com.dada.utils.UUIDUtils;
 
@@ -57,6 +56,24 @@ public class MemberServiceImpl implements IMemberService {
 		return request;
 	}
 
+	@Override
+	public boolean inspectionOldPwd(String member_no, String password) {
+		List<Member> memberList = memberMapper.selectAllInfo(new Member(null, member_no, null, null, null, null, null,
+				null, null, null, null, null, null, null, null, null, null, null));
+		// 判断是否有此账号
+		if (memberList.size() > 0) {
+			// 判断密码是否正确
+			Member member = memberList.get(0);
+			if (member.getPassword().equals(password)) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
 	/**
 	 * <B>方法名称：登录</B><BR>
 	 * 
@@ -67,7 +84,8 @@ public class MemberServiceImpl implements IMemberService {
 	public boolean login(String member_no, String password) {
 		// TODO Auto-generated method stub
 		HttpSession session = getRequest().getSession();
-		List<Member> memberList = memberMapper.login(member_no);
+		List<Member> memberList = memberMapper.selectAllInfo(new Member(null, member_no, null, null, null, null, null,
+				null, null, null, null, null, null, null, null, null, null, null));
 		// 判断是否有此账号
 		if (memberList.size() > 0) {
 			// 判断密码是否正确
@@ -86,6 +104,30 @@ public class MemberServiceImpl implements IMemberService {
 		} else {
 			loginLogService.addLoginLog(new LoginLog(UUIDUtils.getUUID(), IPUtils.getIpAddr(getRequest()), null, null,
 					new Date(), getRequest().getRequestURI(), "登录", "查询", "登录失败", "没有此账号"));
+		}
+		return false;
+	}
+
+	/**
+	 * <B>方法名称：解锁</B><BR>
+	 * 
+	 * @see com.dada.service.IMemberService#login(java.lang.String,
+	 *      java.lang.String)
+	 */
+	@Override
+	public boolean unlock(String member_no, String password) {
+		// TODO Auto-generated method stub
+		HttpSession session = getRequest().getSession();
+		List<Member> memberList = memberMapper.selectAllInfo(new Member(null, member_no, null, null, null, null, null,
+				null, null, null, null, null, null, null, null, null, null, null));
+		// 判断是否有此账号
+		if (memberList.size() > 0) {
+			// 判断密码是否正确
+			Member member = memberList.get(0);
+			if (member.getPassword().equals(password)) {
+				session.setAttribute("member", member); // 重新填入session,防止用户锁定长时间未解锁导致session失效
+				return true;
+			}
 		}
 		return false;
 	}
@@ -110,17 +152,19 @@ public class MemberServiceImpl implements IMemberService {
 	@Override
 	public boolean updateInfo(Member member) {
 		// TODO Auto-generated method stub
+		HttpSession session = getRequest().getSession();
 		boolean bool = memberMapper.updateInfo(member);
-		Member info = memberMapper.selectAllInfo(new Member(member.getId(), null, null, null, null, null, null, null,
-				null, null, null, null, null, null, null, null, null, null));
+		List<Member> info = memberMapper.selectAllInfo(new Member(member.getId(), null, null, null, null, null, null,
+				null, null, null, null, null, null, null, null, null, null, null));
 		if (bool) {
-			operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), info.getMemberNo(),
-					info.getRealname(), IPUtils.getIpAddr(getRequest()), getRequest().getRequestURI(), "修改个人信息", "修改",
-					"修改个人信息成功", new Date()));
+			operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), info.get(0).getMemberNo(),
+					info.get(0).getRealname(), IPUtils.getIpAddr(getRequest()), getRequest().getRequestURI(), "修改个人信息",
+					"修改", "修改个人信息成功", new Date()));
+			session.setAttribute("member", info.get(0));
 		} else {
-			operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), info.getMemberNo(),
-					info.getRealname(), IPUtils.getIpAddr(getRequest()), getRequest().getRequestURI(), "修改个人信息", "修改",
-					"修改个人信息失败", new Date()));
+			operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), info.get(0).getMemberNo(),
+					info.get(0).getRealname(), IPUtils.getIpAddr(getRequest()), getRequest().getRequestURI(), "修改个人信息",
+					"修改", "修改个人信息失败", new Date()));
 		}
 		return bool;
 	}
@@ -134,17 +178,19 @@ public class MemberServiceImpl implements IMemberService {
 	@Override
 	public boolean updatePassword(Member member) {
 		// TODO Auto-generated method stub
+		HttpSession session = getRequest().getSession();
 		boolean bool = memberMapper.updatePassword(member);
-		Member info = memberMapper.selectAllInfo(new Member(null, member.getMemberNo(), null, null, null,
-				null, null, null, null, null, null, null, null, null, null, null, null, null));
+		List<Member> info = memberMapper.selectAllInfo(new Member(null, member.getMemberNo(), null, null, null, null,
+				null, null, null, null, null, null, null, null, null, null, null, null));
 		if (bool) {
-			operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), info.getMemberNo(),
-					info.getRealname(), IPUtils.getIpAddr(getRequest()), getRequest().getRequestURI(), "修改个人信息", "修改",
-					"修改个人密码成功", new Date()));
+			operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), info.get(0).getMemberNo(),
+					info.get(0).getRealname(), IPUtils.getIpAddr(getRequest()), getRequest().getRequestURI(), "修改个人信息",
+					"修改", "修改个人密码成功", new Date()));
+			session.setAttribute("member", info.get(0));
 		} else {
-			operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), info.getMemberNo(),
-					info.getRealname(), IPUtils.getIpAddr(getRequest()), getRequest().getRequestURI(), "修改个人信息", "修改",
-					"修改个人密码失败", new Date()));
+			operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), info.get(0).getMemberNo(),
+					info.get(0).getRealname(), IPUtils.getIpAddr(getRequest()), getRequest().getRequestURI(), "修改个人信息",
+					"修改", "修改个人密码失败", new Date()));
 		}
 		return bool;
 	}
@@ -166,5 +212,65 @@ public class MemberServiceImpl implements IMemberService {
 		loginLogService.addLoginLog(new LoginLog(UUIDUtils.getUUID(), IPUtils.getIpAddr(getRequest()), memberNo,
 				realname, new Date(), getRequest().getRequestURI(), "注销", "删除", "注销成功", "注销成功"));
 		return true;
+	}
+
+	/**
+	 * <B>方法名称：根据条件查询员工信息</B><BR>
+	 * 
+	 * @see com.dada.service.IMemberService#selectConditionsAllMamber(com.dada.entity.Member,
+	 *      java.lang.String)
+	 */
+	@Override
+	public List<Member> selectConditionsAllMamber(Member member, String page, String limit) {
+		// TODO Auto-generated method stub
+		List<Member> listMember = memberMapper.selectAllInfo(member);
+		// 从第几条数据开始
+		int firstIndex = (Integer.valueOf(page) - 1) * (Integer.valueOf(limit));
+		// 到第几条数据结束
+		int lastIndex = 0;
+		if (listMember.size() > Integer.valueOf(page) * (Integer.valueOf(limit))) {
+			lastIndex = Integer.valueOf(page) * (Integer.valueOf(limit));
+		} else {
+			lastIndex = listMember.size();
+		}
+		return listMember.subList(firstIndex, lastIndex);
+	}
+
+	/**
+	 * <B>概要说明：查询所有条数</B><BR>
+	 * 
+	 * @see com.dada.service.IMemberService#selectConditionsAllMamberNumber(com.dada.entity.Member)
+	 */
+	@Override
+	public int selectConditionsAllMamberNumber(Member member) {
+		// TODO Auto-generated method stub
+		List<Member> listMember = memberMapper.selectAllInfo(member);
+		return listMember.size();
+	}
+
+	/**
+	 * <B>概要说明：添加员工</B><BR>
+	 * 
+	 * @see com.dada.service.IMemberService#addMember(com.dada.entity.Member)
+	 */
+	@Override
+	public Member addMember(Member member) {
+		// TODO Auto-generated method stub
+		HttpSession session = getRequest().getSession();
+		Member sessionMember = (Member) session.getAttribute("member");
+		if (memberMapper.insertSelective(member) > 0) {
+			List<Member> info = memberMapper.selectAllInfo(new Member(member.getId(), null, null, null, null, null,
+					null, null, null, null, null, null, null, null, null, null, null, null));
+			operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), sessionMember.getMemberNo(),
+					sessionMember.getRealname(), IPUtils.getIpAddr(getRequest()), getRequest().getRequestURI(), "添加用户",
+					"添加", "添加用户 工号:" + info.get(0).getMemberNo() + " 姓名:" + info.get(0).getRealname(), new Date()));
+			return info.get(0);
+		} else {
+			operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), sessionMember.getMemberNo(),
+					sessionMember.getRealname(), IPUtils.getIpAddr(getRequest()), getRequest().getRequestURI(), "添加用户",
+					"添加", "添加用户失败", new Date()));
+			return null;
+		}
+
 	}
 }

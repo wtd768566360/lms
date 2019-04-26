@@ -21,11 +21,6 @@
 		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
 	</resultMap>
-	<!-- 用户登录 -->
-	<select id="login" resultMap="BaseResultMap" parameterType="string">
-		select * from member where member_no = #{member_no}
-	</select>
-
 	<!-- 修改用户信息 -->
 	<update id="updateInfo" parameterType="com.dada.entity.Member">
 		update member set

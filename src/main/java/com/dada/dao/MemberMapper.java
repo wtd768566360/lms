@@ -19,5 +19,5 @@ public interface MemberMapper {
 
 	boolean updatePassword(Member member);
 
-	Member selectAllInfo(Member member);
+	List<Member> selectAllInfo(Member member);
 }
