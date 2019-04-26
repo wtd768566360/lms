@@ -14,6 +14,53 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
   </resultMap>
+   <update id="updateInfo" parameterType="com.dada.entity.SysCars">
+  	update sys_cars
+  	<set>
+  		<if test="memberId!=null and memberId!=''">member_id=#{memberId},</if>
+  		<if test="licencePlate!=null and licencePlate!=''">licence_plate=#{licencePlate},</if>
+  		<if test="carType!=null and carType>0">car_type=#{carType},</if>
+  		<if test="status!=null and status>0">status=#{status},</if>
+  		<if test="remark!=null and remark!=''">remark=#{remark},</if>
+  		<if test="isDeleted!=null">is_deleted=#{isDeleted},</if>
+  		<if test="creatorId!=null and creatorId!=''">creator_id=#{creatorId},</if>
+  		<if test="modifierId!=null and modifierId!=''">modifier_id=#{modifierId},</if>
+  		<if test="createTime!=null">create_time=#{createTime},</if>
+  		<if test="modifyTime!=null">modify_time=#{modifyTime}</if>
+  	</set>
+  	<where>
+  		id=#{id}
+  	</where>
+  </update>
+  <select id="selectAllInfo" parameterType="com.dada.entity.SysCars" resultType="java.util.Map">
+	  	select cars.id,cars.licence_plate, cars.car_type,cars.status,cars.remark,
+	cars.is_deleted,cars.creator_id,cars.modifier_id,cars.create_time,cars.modify_time,m.id mid,m.realname
+	from sys_cars cars 
+	left join member m
+	on cars.member_id=m.id
+  	<where>
+  		<!-- 按id查询  (用在获取单个信息) -->
+  		<if test="id!=null and id!=''">
+  			cars.id=#{id}
+  		</if>
+  		<!-- 按汽车车牌号查询 -->
+  		<if test="licencePlate!=null and licencePlate!=''">
+  			and cars.licence_plate=#{licencePlate}
+  		</if>
+  		<!-- 按汽车类型查询 -->
+  		<if test="carType!=null and carType>=0">
+  			and cars.car_type=#{carType}
+  		</if>
+  		<!-- 按司机查询 -->
+  		<if test="memberId!=null and memberId>0">
+  			and cars.member_id=#{memberId}
+  		</if>
+  	</where>
+  </select>
+  
+ 
+  
+  
   <insert id="insert" parameterType="com.dada.entity.SysCars">
     insert into sys_cars (id, member_id, licence_plate, 
       car_type, status, remark, 
