@@ -23,6 +23,7 @@ import com.dada.service.ILoginLogService;
 import com.dada.service.IMemberService;
 import com.dada.service.IOperationLogService;
 import com.dada.utils.IPUtils;
+import com.dada.utils.MemberUtils;
 import com.dada.utils.UUIDUtils;
 
 /**
@@ -156,15 +157,16 @@ public class MemberServiceImpl implements IMemberService {
 		boolean bool = memberMapper.updateInfo(member);
 		List<Member> info = memberMapper.selectAllInfo(new Member(member.getId(), null, null, null, null, null, null,
 				null, null, null, null, null, null, null, null, null, null, null));
+		Member sessionMember = (Member) session.getAttribute("member");
 		if (bool) {
-			operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), info.get(0).getMemberNo(),
-					info.get(0).getRealname(), IPUtils.getIpAddr(getRequest()), getRequest().getRequestURI(), "修改个人信息",
-					"修改", "修改个人信息成功", new Date()));
+			operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), sessionMember.getMemberNo(),
+					sessionMember.getRealname(), IPUtils.getIpAddr(getRequest()), getRequest().getRequestURI(),
+					"修改个人信息", "修改", "修改" + member.getMemberNo() + "信息成功", new Date()));
 			session.setAttribute("member", info.get(0));
 		} else {
-			operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), info.get(0).getMemberNo(),
-					info.get(0).getRealname(), IPUtils.getIpAddr(getRequest()), getRequest().getRequestURI(), "修改个人信息",
-					"修改", "修改个人信息失败", new Date()));
+			operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), sessionMember.getMemberNo(),
+					sessionMember.getRealname(), IPUtils.getIpAddr(getRequest()), getRequest().getRequestURI(),
+					"修改个人信息", "修改", "修改" + member.getMemberNo() + "信息失败", new Date()));
 		}
 		return bool;
 	}
@@ -223,7 +225,8 @@ public class MemberServiceImpl implements IMemberService {
 	@Override
 	public List<Member> selectConditionsAllMamber(Member member, String page, String limit) {
 		// TODO Auto-generated method stub
-		List<Member> listMember = memberMapper.selectAllInfo(member);
+		member.setIsDeleted(false);
+		List<Member> listMember = memberMapper.selectLikeInfo(member);
 		// 从第几条数据开始
 		int firstIndex = (Integer.valueOf(page) - 1) * (Integer.valueOf(limit));
 		// 到第几条数据结束
@@ -244,7 +247,8 @@ public class MemberServiceImpl implements IMemberService {
 	@Override
 	public int selectConditionsAllMamberNumber(Member member) {
 		// TODO Auto-generated method stub
-		List<Member> listMember = memberMapper.selectAllInfo(member);
+		member.setIsDeleted(false);
+		List<Member> listMember = memberMapper.selectLikeInfo(member);
 		return listMember.size();
 	}
 
@@ -254,23 +258,64 @@ public class MemberServiceImpl implements IMemberService {
 	 * @see com.dada.service.IMemberService#addMember(com.dada.entity.Member)
 	 */
 	@Override
-	public Member addMember(Member member) {
+	public boolean addMember(Member member) {
 		// TODO Auto-generated method stub
 		HttpSession session = getRequest().getSession();
 		Member sessionMember = (Member) session.getAttribute("member");
+		member.setId(UUIDUtils.getUUID());
+		member.setCreateTime(new Date());// 创建时间
+		member.setCreatorId(sessionMember.getId());// 创建者id
+		member.setPassword("123456");
 		if (memberMapper.insertSelective(member) > 0) {
 			List<Member> info = memberMapper.selectAllInfo(new Member(member.getId(), null, null, null, null, null,
 					null, null, null, null, null, null, null, null, null, null, null, null));
 			operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), sessionMember.getMemberNo(),
 					sessionMember.getRealname(), IPUtils.getIpAddr(getRequest()), getRequest().getRequestURI(), "添加用户",
 					"添加", "添加用户 工号:" + info.get(0).getMemberNo() + " 姓名:" + info.get(0).getRealname(), new Date()));
-			return info.get(0);
+			return true;
 		} else {
 			operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), sessionMember.getMemberNo(),
 					sessionMember.getRealname(), IPUtils.getIpAddr(getRequest()), getRequest().getRequestURI(), "添加用户",
 					"添加", "添加用户失败", new Date()));
-			return null;
+			return false;
 		}
 
+	}
+
+	/**
+	 * <B>概要说明：获取下一个工号</B><BR>
+	 * 
+	 * @see com.dada.service.IMemberService#getMemberNo()
+	 */
+	@Override
+	public String getMemberNo() {
+		// TODO Auto-generated method stub
+		// 计算工号
+		List<Member> memberList = memberMapper.selectAllInfo(null);
+		return MemberUtils.getMenberNo(memberList);
+
+	}
+
+	/**
+	 * <B>概要说明：删除</B><BR>
+	 * 
+	 * @see com.dada.service.IMemberService#deleteMember(java.lang.String)
+	 */
+	@Override
+	public boolean deleteMember(Member member) {
+		// TODO Auto-generated method stub
+		HttpSession session = getRequest().getSession();
+		Member sessionMember = (Member) session.getAttribute("member");
+		if (memberMapper.isDeleteMember(member)) {
+			operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), sessionMember.getMemberNo(),
+					sessionMember.getRealname(), IPUtils.getIpAddr(getRequest()), getRequest().getRequestURI(), "删除用户",
+					"删除", "删除用户成功  工号:" + member.getMemberNo() + " 姓名:" + member.getRealname(), new Date()));
+			return true;
+		} else {
+			operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), sessionMember.getMemberNo(),
+					sessionMember.getRealname(), IPUtils.getIpAddr(getRequest()), getRequest().getRequestURI(), "删除用户",
+					"删除", "删除用户失败  工号:" + member.getMemberNo() + " 姓名:" + member.getRealname(), new Date()));
+			return false;
+		}
 	}
 }

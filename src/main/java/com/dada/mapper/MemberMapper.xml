@@ -25,8 +25,17 @@
 	<update id="updateInfo" parameterType="com.dada.entity.Member">
 		update member set
 		realname=#{realname},phone=#{phone},email=#{email},remark=#{remark}
-		where id=#{id}
+		<if test="status != null">
+			,status = #{status}
+		</if>
+		where member_no=#{memberNo}
 	</update>
+
+	<update id="isDeleteMember" parameterType="com.dada.entity.Member">
+		update member set
+		is_deleted = 1 where member_no=#{memberNo}
+	</update>
+
 
 	<!-- 修改用户密码 -->
 	<update id="updatePassword" parameterType="com.dada.entity.Member">
@@ -34,6 +43,21 @@
 		password=#{password}
 		where member_no=#{memberNo}
 	</update>
+
+	<!-- 模糊查询 -->
+	<select id="selectLikeInfo" resultMap="BaseResultMap"
+		parameterType="com.dada.entity.Member">
+		select * from member where 1=1
+		<if test="realname != null">
+			and realname like '%${realname}%'
+		</if>
+		<if test="status != null">
+			and status = #{status}
+		</if>
+		<if test="isDeleted != null">
+			and is_deleted = #{isDeleted}
+		</if>
+	</select>
 
 	<!-- 查询 -->
 	<select id="selectAllInfo" resultMap="BaseResultMap"
@@ -99,7 +123,7 @@
 		insert into member (id,
 		member_no, realname,
 		password, head_url, id_card,
-		phone, token,
+		phone, email,token,
 		login_ip,
 		last_time, status, remark,
 		is_deleted, creator_id,
@@ -202,6 +226,9 @@
 			</if>
 			<if test="phone != null">
 				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				#{email,jdbcType=VARCHAR},
 			</if>
 			<if test="token != null">
 				#{token,jdbcType=VARCHAR},

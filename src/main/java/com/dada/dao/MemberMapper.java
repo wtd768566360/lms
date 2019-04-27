@@ -20,4 +20,8 @@ public interface MemberMapper {
 	boolean updatePassword(Member member);
 
 	List<Member> selectAllInfo(Member member);
+
+	List<Member> selectLikeInfo(Member member);
+
+	boolean isDeleteMember(Member member);
 }

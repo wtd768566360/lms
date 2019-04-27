@@ -237,6 +237,21 @@ public class MemberController {
 	}
 
 	/**
+	 * <B>概要说明：获取下一个工号</B><BR>
+	 * 
+	 * @param member
+	 * @param page
+	 * @return
+	 */
+	@RequestMapping(value = "/getMemberNo.do", method = { RequestMethod.GET })
+	@ResponseBody
+	public ServerResponse getMemberNo() {
+		String memberNo = memberService.getMemberNo();
+		logger.info("成功获取工号信息 " + memberNo + " ...");
+		return ServerResponse.createBySuccess("success", memberNo);
+	}
+
+	/**
 	 * <B>概要说明：添加员工</B><BR>
 	 * 
 	 * @param member
@@ -246,11 +261,33 @@ public class MemberController {
 	@ResponseBody
 	public ServerResponse addMember(Member member) {
 		ServerResponse serverResponse = null;
-		Member info = memberService.addMember(member);
-		if (info != null) {
-			serverResponse = ServerResponse.createBySuccess("success", info);
+		boolean bool = memberService.addMember(member);
+		if (bool) {
+			serverResponse = ServerResponse.createBySuccess("success");
+			logger.info("员工信息添加成功...");
 		} else {
 			serverResponse = ServerResponse.createByErrorMessage("添加失败");
+			logger.info("员工信息添加失败...");
+		}
+		return serverResponse;
+	}
+
+	/**
+	 * <B>概要说明：删除员工</B><BR>
+	 * 
+	 * @param member
+	 * @return
+	 */
+	@RequestMapping(value = "/deleteMember.do", method = { RequestMethod.POST })
+	@ResponseBody
+	public ServerResponse deleteMember(Member member) {
+		ServerResponse serverResponse = null;
+		if (memberService.deleteMember(member)) {
+			serverResponse = ServerResponse.createBySuccess("success");
+			logger.info("员工信息删除成功...");
+		} else {
+			serverResponse = ServerResponse.createByErrorMessage("删除失败");
+			logger.info("员工信息删除失败...");
 		}
 		return serverResponse;
 	}

@@ -23,7 +23,7 @@ public interface IMemberService {
 
 	boolean removeMemberExit(String memberNo, String realname);
 
-	Member addMember(Member member);
+	boolean addMember(Member member);
 
 	List<Member> selectConditionsAllMamber(Member member, String page,String limit);
 
@@ -32,5 +32,9 @@ public interface IMemberService {
 	boolean inspectionOldPwd(String member_no, String password);
 
 	boolean unlock(String member_no, String password);
+
+	String getMemberNo();
+
+	boolean deleteMember(Member member);
 
 }
