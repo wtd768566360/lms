@@ -90,4 +90,81 @@
       </if>
     </trim>
   </insert>
+
+  <update id="update" parameterType="com.dada.entity.SysStations">
+  UPDATE sys_stations
+  <set>
+    <if test="stationName != null">
+      station_name = #{stationName},
+    </if>
+    <if test="memberId != null">
+      member_id = #{memberId},
+    </if>
+    <if test="status != null">
+      status = #{status},
+    </if>
+    <if test="remark != null">
+      remark = #{remark},
+    </if>
+    <if test="modifierId != null">
+      modifier_id = #{modifierId},
+    </if>
+    <if test="modifyTime != null">
+      modify_time = #{modifyTime}
+    </if>
+  </set>
+  WHERE is_deleted = 0
+  AND id = #{id}
+  </update>
+
+  <update id="remove" parameterType="com.dada.entity.SysStations">
+    UPDATE sys_stations SET is_deleted = 1, modify_time = #{modifyTime} WHERE is_deleted = 0 AND id = #{id}
+  </update>
+  
+  <select id="list" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    id,
+    station_name,
+    member_id,
+    status,
+    remark,
+    creator_id,
+    modifier_id,
+    create_time,
+    modify_time
+    FROM sys_stations
+    WHERE is_deleted = 0
+    <if test="stationName != null">
+      AND station_name LIKE CONCAT('%', #{stationName}, '%')
+    </if>
+  </select>
+
+  <select id="findPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    id,
+    station_name,
+    member_id,
+    status,
+    remark,
+    creator_id,
+    modifier_id,
+    create_time,
+    modify_time
+    FROM sys_stations
+    WHERE is_deleted = 0
+    <if test="stationName != null">
+      AND station_name LIKE CONCAT('%', #{stationName}, '%')
+    </if>
+    LIMIT #{startNO}, #{pageSize}
+  </select>
+
+  <select id="findPageByCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    SELECT
+    COUNT(id)
+    FROM sys_stations
+    WHERE is_deleted = 0
+    <if test="stationName != null">
+      AND station_name LIKE CONCAT('%', #{stationName}, '%')
+    </if>
+  </select>
 </mapper>

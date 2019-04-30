@@ -3,7 +3,11 @@
  */
 package com.dada.service;
 
+import java.util.Date;
 import java.util.List;
+
+import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dada.entity.Member;
 
@@ -25,7 +29,7 @@ public interface IMemberService {
 
 	boolean addMember(Member member);
 
-	List<Member> selectConditionsAllMamber(Member member, String page,String limit);
+	List<Member> selectConditionsAllMamber(Member member, String page, String limit);
 
 	int selectConditionsAllMamberNumber(Member member);
 
@@ -36,5 +40,11 @@ public interface IMemberService {
 	String getMemberNo();
 
 	boolean deleteMember(Member member);
+
+	String getMemberName(String id);
+
+	Date getLastTime();
+
+	String memberPicture(MultipartFile multipartFile, Model model);
 
 }

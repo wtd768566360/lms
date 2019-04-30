@@ -5,10 +5,15 @@ package com.dada.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dada.common.ServerResponse;
 import com.dada.entity.Member;
@@ -16,8 +21,12 @@ import com.dada.service.IMemberService;
 
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.tomcat.jni.Directory;
 import org.slf4j.Logger;
 
 /**
@@ -252,6 +261,21 @@ public class MemberController {
 	}
 
 	/**
+	 * <B>概要说明：根据id获取工号</B><BR>
+	 * 
+	 * @param member
+	 * @param page
+	 * @return
+	 */
+	@RequestMapping(value = "/getMemberName.do", method = { RequestMethod.GET })
+	@ResponseBody
+	public ServerResponse getMemberName(String id) {
+		String memberName = memberService.getMemberName(id);
+		logger.info("成功获取姓名信息 " + memberName + " ...");
+		return ServerResponse.createBySuccess("success", memberName);
+	}
+
+	/**
 	 * <B>概要说明：添加员工</B><BR>
 	 * 
 	 * @param member
@@ -291,4 +315,40 @@ public class MemberController {
 		}
 		return serverResponse;
 	}
+
+	/**
+	 * <B>概要说明：获取上次登录时间</B><BR>
+	 * 
+	 * @param member
+	 * @return
+	 */
+	@RequestMapping(value = "/getLastTime.do", method = { RequestMethod.GET })
+	@ResponseBody
+	public ServerResponse getLastTime() {
+		Date lastTime = memberService.getLastTime();
+		logger.info("成功获取用户上次登录信息 " + lastTime + " ...");
+		return ServerResponse.createBySuccess("success", lastTime);
+	}
+
+	/**
+	 * <B>概要说明：头像上传</B><BR>
+	 * 
+	 * @param member
+	 * @return
+	 */
+	@RequestMapping(value = "/memberPicture.do", method = { RequestMethod.POST })
+	@ResponseBody
+	public ServerResponse memberPicture(@RequestParam("file") MultipartFile multipartFile, Model model) {// 入参代表上传的文件
+		ServerResponse serverResponse = null;
+		String path = memberService.memberPicture(multipartFile, model);
+		if (path != null) {
+			logger.info("用户更新了头像...成功 ");
+			serverResponse.createBySuccess("success", path);
+		} else {
+			logger.info("用户更新了头像...失败 ");
+			serverResponse.createByErrorMessage("更新头像失败");
+		}
+		return serverResponse;
+	}
+
 }

@@ -24,4 +24,8 @@ public interface MemberMapper {
 	List<Member> selectLikeInfo(Member member);
 
 	boolean isDeleteMember(Member member);
+
+	String getMemberName(String id);
+
+	boolean updateLastTime(Member updateMember);
 }

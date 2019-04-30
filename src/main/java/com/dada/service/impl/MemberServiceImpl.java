@@ -3,6 +3,8 @@
  */
 package com.dada.service.impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -12,8 +14,10 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dada.dao.MemberMapper;
 import com.dada.entity.LoginLog;
@@ -93,6 +97,9 @@ public class MemberServiceImpl implements IMemberService {
 			Member member = memberList.get(0);
 			if (member.getPassword().equals(password)) {
 				session.setAttribute("member", member);
+				Member updateMember = new Member(null, member_no, null, null, null, null, null, null, null,
+						IPUtils.getIpAddr(getRequest()), new Date(), null, null, null, null, null, null, null);
+				memberMapper.updateLastTime(updateMember);
 				loginLogService.addLoginLog(new LoginLog(UUIDUtils.getUUID(), IPUtils.getIpAddr(getRequest()),
 						member.getMemberNo(), member.getRealname(), new Date(), getRequest().getRequestURI(), "登录",
 						"查询", "登录成功", "登录成功"));
@@ -317,5 +324,75 @@ public class MemberServiceImpl implements IMemberService {
 					"删除", "删除用户失败  工号:" + member.getMemberNo() + " 姓名:" + member.getRealname(), new Date()));
 			return false;
 		}
+	}
+
+	/**
+	 * <B>方法名称：</B><BR>
+	 * <B>概要说明：</B><BR>
+	 * 
+	 * @see com.dada.service.IMemberService#getMemberName(java.lang.String)
+	 */
+	@Override
+	public String getMemberName(String id) {
+		// TODO Auto-generated method stub
+		String memberName = memberMapper.getMemberName(id);
+		return memberName;
+	}
+
+	/**
+	 * <B>概要说明：获取最后登录时间</B><BR>
+	 * 
+	 * @see com.dada.service.IMemberService#getLastTime()
+	 */
+	@Override
+	public Date getLastTime() {
+		HttpSession session = getRequest().getSession();
+		Member member = (Member) session.getAttribute("member");
+		return member.getLastTime();
+	}
+
+	/**
+	 * <B>概要说明：文件上传</B><BR>
+	 * 
+	 * @see com.dada.service.IMemberService#memberPicture(org.springframework.web.multipart.MultipartFile,
+	 *      org.springframework.ui.Model)
+	 */
+	@Override
+	public String memberPicture(MultipartFile multipartFile, Model model) {
+		// TODO Auto-generated method stub
+		// 0，判断是否为空
+		if (multipartFile != null && !multipartFile.isEmpty()) {
+			/**
+			 * 对文件名进行操作防止文件重名
+			 */
+			// 1，获取原始文件名
+			String originalFilename = multipartFile.getOriginalFilename();
+			// 2,截取源文件的文件名前缀,不带后缀
+			String fileNamePrefix = originalFilename.substring(0, originalFilename.lastIndexOf("."));
+			// 3,加工处理文件名，原文件加上时间戳
+			String newFileNamePrefix = fileNamePrefix + System.currentTimeMillis();
+			// 4,得到新文件名
+			String newFileName = newFileNamePrefix + originalFilename.substring(originalFilename.lastIndexOf("."));
+			// 5,构建文件对象
+			// 获取服务器相路径
+			String path = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest()
+					.getSession().getServletContext().getRealPath("upload") + File.separator + newFileName;
+
+			File file = new File(path);
+			if (!file.exists()) {
+				file.mkdirs();
+			}
+			// 6,执行上传操作
+			try {
+				multipartFile.transferTo(file);
+				// 上传成功，向jsp页面发送成功信息
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return path;
+		} else {
+			return null;
+		}
+
 	}
 }

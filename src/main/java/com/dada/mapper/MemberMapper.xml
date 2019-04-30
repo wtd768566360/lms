@@ -31,11 +31,22 @@
 		where member_no=#{memberNo}
 	</update>
 
+	<!-- 查询姓名 -->
+	<select id="getMemberName" resultType="String" parameterType="String">
+		select realname from
+		member where id = #{id}
+	</select>
+
 	<update id="isDeleteMember" parameterType="com.dada.entity.Member">
 		update member set
 		is_deleted = 1 where member_no=#{memberNo}
 	</update>
-
+	<!-- 修改最后登录信息 -->
+	<update id="updateLastTime" parameterType="com.dada.entity.Member">
+		update member set
+		login_ip = #{loginIp},last_time = #{lastTime} where
+		member_no=#{memberNo}
+	</update>
 
 	<!-- 修改用户密码 -->
 	<update id="updatePassword" parameterType="com.dada.entity.Member">
