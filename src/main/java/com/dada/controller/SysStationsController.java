@@ -28,66 +28,66 @@ import java.util.Map;
 @RequestMapping(value = "/station")
 public class SysStationsController {
 
-    private final Logger logger = LoggerFactory.getLogger(SysStationsController.class);
+	private final Logger logger = LoggerFactory.getLogger(SysStationsController.class);
 
-    @Autowired
-    private ISysStationsService sysStationsService;
+	@Autowired
+	private ISysStationsService sysStationsService;
 
-    @RequestMapping(value = "/add.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ServerResponse add(@RequestBody SysStations dto) {
-        if(this.sysStationsService.insert(dto)) {
-            this.logger.info("添加站点成功...");
-            return ServerResponse.createByErrorMessage("添加站点成功");
-        }
-        this.logger.info("添加站点失败...");
-        return ServerResponse.createByErrorMessage("添加站点失败");
-    }
+	@RequestMapping(value = "/add.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ServerResponse add(@RequestBody SysStations dto) {
+		if (this.sysStationsService.insert(dto)) {
+			this.logger.info("添加站点成功...");
+			return ServerResponse.createByErrorMessage("添加站点成功");
+		}
+		this.logger.info("添加站点失败...");
+		return ServerResponse.createByErrorMessage("添加站点失败");
+	}
 
-    @RequestMapping(value = "/delete.do", method = RequestMethod.GET)
-    @ResponseBody
-    public ServerResponse delete(String id) {
-        String userId = "";
-        if(this.sysStationsService.remove(id, userId)) {
-            this.logger.info("删除站点成功...");
-            return ServerResponse.createByErrorMessage("删除站点成功");
-        }
-        this.logger.info("删除站点失败...");
-        return ServerResponse.createByErrorMessage("删除站点失败");
-    }
+	@RequestMapping(value = "/delete.do", method = RequestMethod.GET)
+	@ResponseBody
+	public ServerResponse delete(String id) {
+		String userId = "";
+		if (this.sysStationsService.remove(id, userId)) {
+			this.logger.info("删除站点成功...");
+			return ServerResponse.createByErrorMessage("删除站点成功");
+		}
+		this.logger.info("删除站点失败...");
+		return ServerResponse.createByErrorMessage("删除站点失败");
+	}
 
-    @RequestMapping(value = "/edit.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ServerResponse update(@RequestBody SysStations dto) {
-        if(this.sysStationsService.edit(dto)) {
-            this.logger.info("修改站点成功...");
-            return ServerResponse.createByErrorMessage("修改站点成功");
-        }
-        this.logger.info("修改站点失败...");
-        return ServerResponse.createByErrorMessage("修改站点失败");
-    }
+	@RequestMapping(value = "/edit.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ServerResponse update(@RequestBody SysStations dto) {
+		if (this.sysStationsService.edit(dto)) {
+			this.logger.info("修改站点成功...");
+			return ServerResponse.createByErrorMessage("修改站点成功");
+		}
+		this.logger.info("修改站点失败...");
+		return ServerResponse.createByErrorMessage("修改站点失败");
+	}
 
-    @RequestMapping(value = "/list.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ServerResponse list(String stationName) {
-        List<SysStations> list = this.sysStationsService.list(stationName);
-        if(list != null && !list.isEmpty()) {
-            this.logger.info("获取站点列表成功...");
-            return ServerResponse.createBySuccess("获取站点列表成功", list);
-        }
-        this.logger.info("获取站点列表失败...");
-        return ServerResponse.createByErrorMessage("获取站点列表失败");
-    }
+	@RequestMapping(value = "/list.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ServerResponse list(String stationName) {
+		List<SysStations> list = this.sysStationsService.list(stationName);
+		if (list != null && !list.isEmpty()) {
+			this.logger.info("获取站点列表成功...");
+			return ServerResponse.createBySuccess("获取站点列表成功", list);
+		}
+		this.logger.info("获取站点列表失败...");
+		return ServerResponse.createByErrorMessage("获取站点列表失败");
+	}
 
-    @RequestMapping(value = "/page.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ServerResponse getPage(@RequestParam(value = "currentPage", defaultValue = "0") int currentPage, @RequestParam(value = "pageSize", defaultValue = "10") int pageSize, @RequestParam(value = "stationName") String stationName) {
-        Map<String, Object> map = this.sysStationsService.findPage(stationName, currentPage, pageSize);
-        if(map != null && !map.isEmpty()) {
-            this.logger.info("获取站点列表成功...");
-            return ServerResponse.createByPageSuccess("获取站点列表成功", (String) map.get("totalCount"), map.get("list"));
-        }
-        this.logger.info("获取站点列表失败...");
-        return ServerResponse.createByErrorMessage("获取站点列表失败");
-    }
+	@RequestMapping(value = "/page.do", method = RequestMethod.GET)
+	@ResponseBody
+	public ServerResponse getPage(int page,int limit,SysStations SysStations) {
+		Map<String, Object> map = this.sysStationsService.findPage(SysStations, page, limit);
+		if (map != null && !map.isEmpty()) {
+			this.logger.info("获取站点列表成功...");
+			return ServerResponse.createByPageSuccess("获取站点列表成功", String.valueOf(map.get("totalCount")), map.get("list"));
+		}
+		this.logger.info("获取站点列表失败...");
+		return ServerResponse.createByErrorMessage("获取站点列表失败");
+	}
 }

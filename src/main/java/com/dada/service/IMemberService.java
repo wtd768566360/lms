@@ -45,6 +45,8 @@ public interface IMemberService {
 
 	Date getLastTime();
 
-	String memberPicture(MultipartFile multipartFile, Model model);
+	String memberPicture(MultipartFile multipartFile);
+
+	boolean updateHandUrl(String path);
 
 }

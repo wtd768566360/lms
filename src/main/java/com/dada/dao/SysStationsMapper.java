@@ -46,7 +46,7 @@ public interface SysStationsMapper {
      * @param pageSize
      * @return
      */
-    List<SysStations> findPage(String stationName, int currentPage, int pageSize);
+    List<SysStations> findPage(SysStations sysStations);
 
     /**
      * 获取分页条数
@@ -55,5 +55,5 @@ public interface SysStationsMapper {
      * @param pageSize
      * @return
      */
-    int findPageByCount(String stationName, int currentPage, int pageSize);
+    int findPageByCount(SysStations sysStations);
 }

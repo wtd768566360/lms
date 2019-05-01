@@ -36,5 +36,6 @@ public class LoginLogController {
 	public String selectLoginLog(String startDate,String endDate) {
 		boolean bool = loginLogService.selectDateLoginLog(startDate,endDate);
 		return null;
+		
 	}
 }

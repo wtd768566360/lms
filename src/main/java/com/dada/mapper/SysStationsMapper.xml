@@ -139,7 +139,7 @@
     </if>
   </select>
 
-  <select id="findPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+  <select id="findPage" parameterType="com.dada.entity.SysStations" resultMap="BaseResultMap">
     SELECT
     id,
     station_name,
@@ -155,16 +155,21 @@
     <if test="stationName != null">
       AND station_name LIKE CONCAT('%', #{stationName}, '%')
     </if>
-    LIMIT #{startNO}, #{pageSize}
+    <if test="memberId != null">
+      AND member_id in(select id FROM member where realname LIKE CONCAT('%', #{memberId}, '%'))
+    </if>
   </select>
 
-  <select id="findPageByCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+  <select id="findPageByCount" parameterType="com.dada.entity.SysStations" resultType="java.lang.Integer">
     SELECT
     COUNT(id)
     FROM sys_stations
     WHERE is_deleted = 0
     <if test="stationName != null">
       AND station_name LIKE CONCAT('%', #{stationName}, '%')
+    </if>
+    <if test="memberId != null">
+      AND member_id in(select id FROM member where realname LIKE CONCAT('%', #{memberId}, '%'))
     </if>
   </select>
 </mapper>

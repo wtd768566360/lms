@@ -338,17 +338,16 @@ public class MemberController {
 	 */
 	@RequestMapping(value = "/memberPicture.do", method = { RequestMethod.POST })
 	@ResponseBody
-	public ServerResponse memberPicture(@RequestParam("file") MultipartFile multipartFile, Model model) {// 入参代表上传的文件
-		ServerResponse serverResponse = null;
-		String path = memberService.memberPicture(multipartFile, model);
+	public ServerResponse memberPicture(@RequestParam("file") MultipartFile multipartFile) {
+		String path = memberService.memberPicture(multipartFile);
+		memberService.updateHandUrl(path);
 		if (path != null) {
 			logger.info("用户更新了头像...成功 ");
-			serverResponse.createBySuccess("success", path);
+			return ServerResponse.createBySuccess("success", path);
 		} else {
 			logger.info("用户更新了头像...失败 ");
-			serverResponse.createByErrorMessage("更新头像失败");
+			return ServerResponse.createByErrorMessage("更新头像失败");
 		}
-		return serverResponse;
 	}
 
 }

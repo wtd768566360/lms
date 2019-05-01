@@ -47,6 +47,8 @@ public class MemberServiceImpl implements IMemberService {
 	private ILoginLogService loginLogService;
 	@Autowired
 	private IOperationLogService operationLogService;
+	@Autowired
+	private IMemberService memberService;
 
 	/**
 	 * <B>方法名称：获取HttpServletRequest</B><BR>
@@ -358,7 +360,7 @@ public class MemberServiceImpl implements IMemberService {
 	 *      org.springframework.ui.Model)
 	 */
 	@Override
-	public String memberPicture(MultipartFile multipartFile, Model model) {
+	public String memberPicture(MultipartFile multipartFile) {
 		// TODO Auto-generated method stub
 		// 0，判断是否为空
 		if (multipartFile != null && !multipartFile.isEmpty()) {
@@ -375,24 +377,37 @@ public class MemberServiceImpl implements IMemberService {
 			String newFileName = newFileNamePrefix + originalFilename.substring(originalFilename.lastIndexOf("."));
 			// 5,构建文件对象
 			// 获取服务器相路径
-			String path = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest()
-					.getSession().getServletContext().getRealPath("upload") + File.separator + newFileName;
-
-			File file = new File(path);
+			String url = getRequest().getServletContext().getRealPath("/upload");
+			File file = new File(url);
 			if (!file.exists()) {
 				file.mkdirs();
 			}
+			File newfile = new File(url + File.separator + newFileName);
 			// 6,执行上传操作
 			try {
-				multipartFile.transferTo(file);
-				// 上传成功，向jsp页面发送成功信息
+				multipartFile.transferTo(newfile);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			return path;
+			return "upload" + File.separator + newFileName;
 		} else {
 			return null;
 		}
 
+	}
+
+	/**
+	 * <B>概要说明：更新数据库头像地址</B><BR>
+	 * 
+	 * @see com.dada.service.IMemberService#updateHandUrl(java.lang.String)
+	 */
+	@Override
+	public boolean updateHandUrl(String path) {
+		// TODO Auto-generated method stub
+		Member member = memberService.selectMember();
+		Member newMember = new Member();
+		newMember.setHeadUrl(path);
+		newMember.setMemberNo(member.getMemberNo());
+		return memberService.updateInfo(newMember);
 	}
 }

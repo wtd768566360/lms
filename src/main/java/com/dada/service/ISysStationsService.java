@@ -54,5 +54,5 @@ public interface ISysStationsService {
      * @param pageSize
      * @return
      */
-    Map<String, Object> findPage(String stationName, int currentPage, int pageSize);
+    Map<String, Object> findPage(SysStations sysStations, int currentPage, int pageSize);
 }
