@@ -35,10 +35,10 @@ public class SysStationsController {
 
 	@RequestMapping(value = "/add.do", method = RequestMethod.POST)
 	@ResponseBody
-	public ServerResponse add(@RequestBody SysStations dto) {
+	public ServerResponse add(SysStations dto) {
 		if (this.sysStationsService.insert(dto)) {
 			this.logger.info("添加站点成功...");
-			return ServerResponse.createByErrorMessage("添加站点成功");
+			return ServerResponse.createBySuccess("success",null);
 		}
 		this.logger.info("添加站点失败...");
 		return ServerResponse.createByErrorMessage("添加站点失败");
@@ -50,7 +50,7 @@ public class SysStationsController {
 		String userId = "";
 		if (this.sysStationsService.remove(id, userId)) {
 			this.logger.info("删除站点成功...");
-			return ServerResponse.createByErrorMessage("删除站点成功");
+			return ServerResponse.createBySuccess("success",null);
 		}
 		this.logger.info("删除站点失败...");
 		return ServerResponse.createByErrorMessage("删除站点失败");
@@ -58,10 +58,10 @@ public class SysStationsController {
 
 	@RequestMapping(value = "/edit.do", method = RequestMethod.POST)
 	@ResponseBody
-	public ServerResponse update(@RequestBody SysStations dto) {
+	public ServerResponse update(SysStations dto) {
 		if (this.sysStationsService.edit(dto)) {
 			this.logger.info("修改站点成功...");
-			return ServerResponse.createByErrorMessage("修改站点成功");
+			return ServerResponse.createBySuccess("success",null);
 		}
 		this.logger.info("修改站点失败...");
 		return ServerResponse.createByErrorMessage("修改站点失败");
@@ -73,7 +73,7 @@ public class SysStationsController {
 		List<SysStations> list = this.sysStationsService.list(stationName);
 		if (list != null && !list.isEmpty()) {
 			this.logger.info("获取站点列表成功...");
-			return ServerResponse.createBySuccess("获取站点列表成功", list);
+			return ServerResponse.createBySuccess("success", list);
 		}
 		this.logger.info("获取站点列表失败...");
 		return ServerResponse.createByErrorMessage("获取站点列表失败");

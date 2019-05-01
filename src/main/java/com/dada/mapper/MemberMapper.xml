@@ -58,7 +58,7 @@
 	<!-- 模糊查询 -->
 	<select id="selectLikeInfo" resultMap="BaseResultMap"
 		parameterType="com.dada.entity.Member">
-		select * from member where 1=1
+		select * from member where is_deleted=0
 		<if test="realname != null">
 			and realname like '%${realname}%'
 		</if>
@@ -73,7 +73,7 @@
 	<!-- 查询 -->
 	<select id="selectAllInfo" resultMap="BaseResultMap"
 		parameterType="com.dada.entity.Member">
-		select * from member where 1=1
+		select * from member where is_deleted=0
 		<if test="id != null">
 			and id = #{id}
 		</if>
