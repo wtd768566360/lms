@@ -85,4 +85,9 @@ public class SysStationsServiceImpl implements ISysStationsService {
 		map.put("totalCount", count);
 		return map;
 	}
+
+	@Override
+	public List<SysStations> selectSysStaMemberNo(Member mem) {
+		return sysStationsMapper.selectSysStaMemberNo(mem);
+	}
 }

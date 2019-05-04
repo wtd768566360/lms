@@ -14,7 +14,7 @@ public class SysStations {
 	private String stationName;
 
 	/**
-	 * 站点名称
+	 * 站点地址
 	 */
 	private String address;
 
@@ -57,7 +57,8 @@ public class SysStations {
 	 * 修改时间
 	 */
 	private Date modifyTime;
-
+	
+	
 	/**
 	 * 站点ID
 	 * 

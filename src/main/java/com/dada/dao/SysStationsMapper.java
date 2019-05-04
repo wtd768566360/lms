@@ -2,6 +2,7 @@ package com.dada.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.dada.entity.Member;
 import com.dada.entity.SysStations;
 
 import java.util.List;
@@ -56,4 +57,11 @@ public interface SysStationsMapper {
      * @return
      */
     int findPageByCount(SysStations sysStations);
+    
+    /**
+     * 根据员工id查询  站点
+     * @param mem
+     * @return
+     */
+    List<SysStations> selectSysStaMemberNo(Member mem);
 }

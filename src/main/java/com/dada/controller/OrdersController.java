@@ -9,11 +9,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.dada.common.ServerResponse;
+import com.dada.entity.OrderHistory;
 import com.dada.entity.Orders;
 import com.dada.model.OrderModel;
 import com.dada.service.ILineCarBindService;
@@ -72,6 +78,7 @@ public class OrdersController {
 		}
 	}
 
+
 	@RequestMapping(value = "/confirmGoods.do", method = RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse confirmGoods(String orderid, String carid, String lineid) {
@@ -85,4 +92,42 @@ public class OrdersController {
 		}
 	}
 
+	
+	@RequestMapping(value = "inserOrders.do", method = { RequestMethod.POST })
+	@ResponseBody
+	public ServerResponse insertOrders1(@RequestBody String o) {
+		
+		o=o.substring(1, o.length()-1);
+		System.out.println(o);
+		Orders order = JSON.parseObject(o, Orders.class);
+		ServerResponse serverresponse = null;
+		boolean bool=ordersService.insertOrder(order);
+		if(bool) {
+			logger.info("增加订单信息成功");
+			serverresponse = ServerResponse.createBySuccessMessage("增加订单信息成功");
+		}else {
+			logger.info("增加车辆信息失败");
+			serverresponse = ServerResponse.createBySuccessMessage("增加车辆信息失败");
+		}
+		return serverresponse;
+	}
+
+	@RequestMapping(value = "inserOrders.do", method = { RequestMethod.POST })
+	@ResponseBody
+	public ServerResponse insertOrders(@RequestBody String o) {
+		
+		o=o.substring(1, o.length()-1);
+		System.out.println(o);
+		Orders order = JSON.parseObject(o, Orders.class);
+		ServerResponse serverresponse = null;
+		boolean bool=ordersService.insertOrder(order);
+		if(bool) {
+			logger.info("增加订单信息成功");
+			serverresponse = ServerResponse.createBySuccessMessage("增加订单信息成功");
+		}else {
+			logger.info("增加车辆信息失败");
+			serverresponse = ServerResponse.createBySuccessMessage("增加车辆信息失败");
+		}
+		return serverresponse;
+	}
 }

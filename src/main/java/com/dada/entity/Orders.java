@@ -1,8 +1,10 @@
 package com.dada.entity;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-public class Orders {
+public class Orders implements Serializable{
     /**
      * 订单ID
      */
@@ -11,7 +13,7 @@ public class Orders {
     /**
      * 车辆ID
      */
-    private String carId;
+    private String carId="0";
 
     /**
      * 订单编号
@@ -111,7 +113,21 @@ public class Orders {
         return id;
     }
 
-    /**
+    
+    public  List<OrderHistory> orderhistorys;
+    
+    
+    
+    
+    public List<OrderHistory> getOrderhistorys() {
+		return orderhistorys;
+	}
+
+	public void setOrderhistorys(List<OrderHistory> orderhistorys) {
+		this.orderhistorys = orderhistorys;
+	}
+
+	/**
      * 订单ID
      * @param id 订单ID
      */
