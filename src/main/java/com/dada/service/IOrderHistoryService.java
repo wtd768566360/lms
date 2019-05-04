@@ -3,6 +3,10 @@
  */
 package com.dada.service;
 
+import java.util.List;
+
+import com.dada.entity.OrderHistory;
+
 /**
  * <B>系统名称：</B><BR>
  * <B>模块名称：</B><BR>
@@ -12,5 +16,5 @@ package com.dada.service;
  * @since 2019年4月19日
  */
 public interface IOrderHistoryService {
-
+	List<OrderHistory> selectHistorys(OrderHistory his);
 }

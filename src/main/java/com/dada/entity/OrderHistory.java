@@ -1,8 +1,9 @@
 package com.dada.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class OrderHistory {
+public class OrderHistory implements Serializable{
     /**
      * 订单ID
      */

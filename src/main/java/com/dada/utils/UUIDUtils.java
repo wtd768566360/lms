@@ -3,6 +3,8 @@
  */
 package com.dada.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -21,5 +23,13 @@ public class UUIDUtils {
 	 */
 	public static String getUUID() {
 		return UUID.randomUUID().toString().replace("-", "").toUpperCase();
+	}
+	
+	public static String getNo(){
+		Date date=new Date();
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
+		String time=sdf.format(date);
+		int s=(int)(Math.random()*1000);
+		return time+s;
 	}
 }

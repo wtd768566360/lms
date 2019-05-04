@@ -20,5 +20,7 @@ public interface IOrdersService {
 	Map<String, Object> findPage(Orders orders, int page, int limit);
 
 	boolean updateStatus(Orders orders);
+	
+	boolean insertOrder(Orders order);
 
 }

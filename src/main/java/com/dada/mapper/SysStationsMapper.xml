@@ -13,6 +13,7 @@
 		<result column="modifier_id" jdbcType="VARCHAR" property="modifierId" />
 		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+		<result column="address" property="address" />
 	</resultMap>
 	<insert id="insert" parameterType="com.dada.entity.SysStations">
 		insert into sys_stations (id,
@@ -171,5 +172,17 @@
 		<if test="stationName != null">
 			AND station_name LIKE CONCAT('%', #{stationName}, '%')
 		</if>
+	</select>
+	
+	<select id="selectSysStaMemberNo" parameterType="com.dada.entity.Member" resultMap="BaseResultMap">
+	SELECT
+		*
+		FROM sys_stations
+		<where>
+			<if test="id!=null and id!=''">
+				member_id=#{id}
+			</if>
+		</where>
+		
 	</select>
 </mapper>

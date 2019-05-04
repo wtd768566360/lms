@@ -3,6 +3,7 @@
  */
 package com.dada.service;
 
+import com.dada.entity.Member;
 import com.dada.entity.SysStations;
 
 import java.util.List;
@@ -55,4 +56,11 @@ public interface ISysStationsService {
      * @return
      */
     Map<String, Object> findPage(SysStations sysStations, int currentPage, int pageSize);
+    
+    /**
+     * 根据员工id查询  站点
+     * @param mem
+     * @return
+     */
+    List<SysStations> selectSysStaMemberNo(Member mem);
 }

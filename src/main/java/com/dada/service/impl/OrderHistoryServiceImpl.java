@@ -3,6 +3,13 @@
  */
 package com.dada.service.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.dada.dao.OrderHistoryMapper;
+import com.dada.entity.OrderHistory;
 import com.dada.service.IOrderHistoryService;
 
 /**
@@ -13,6 +20,17 @@ import com.dada.service.IOrderHistoryService;
  * @author（WuTengda）
  * @since 2019年4月19日
  */
+@Service
 public class OrderHistoryServiceImpl implements IOrderHistoryService {
+
+	@Autowired
+	private OrderHistoryMapper orderHistoryMapper;
+	
+	
+	@Override
+	public List<OrderHistory> selectHistorys(OrderHistory his) {
+		
+		return orderHistoryMapper.selectHistorys(his);
+	}
 
 }
