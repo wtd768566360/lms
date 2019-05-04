@@ -42,9 +42,5 @@ public class FunctionTest extends BaseTest {
 	@Test
 	public void sessionTest() {
 
-		if (memberService.login("N0001", "123456")) {
-			Member member = memberService.selectMember();
-			System.out.println(member.getMemberNo());
-		}
 	}
 }

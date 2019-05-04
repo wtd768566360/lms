@@ -28,4 +28,6 @@ public interface MemberMapper {
 	String getMemberName(String id);
 
 	boolean updateLastTime(Member updateMember);
+
+	int updateInfoHandlr(Member member);
 }

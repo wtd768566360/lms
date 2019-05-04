@@ -17,7 +17,7 @@ import com.dada.entity.Member;
  */
 public interface IMemberService {
 
-	boolean login(String member_no, String pass);
+	Member login(String member_no, String pass);
 
 	Member selectMember();
 
@@ -47,7 +47,7 @@ public interface IMemberService {
 
 	String memberPicture(MultipartFile multipartFile);
 
-	boolean updateHandUrl(String path);
+	boolean updateHandUrl(String path,String id);
 
 	List<Member> selectConditionsAllMamber(Member member);
 }

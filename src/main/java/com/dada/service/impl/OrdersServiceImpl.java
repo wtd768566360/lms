@@ -43,12 +43,11 @@ public class OrdersServiceImpl implements IOrdersService {
 	 *      int, int)
 	 */
 	@Override
-	public Map<String, Object> findPage(Orders orders, int page, int limit) {
+	public Map<String, Object> findPage(Orders orders, int page, int limit, String token, String memberNo) {
 		// TODO Auto-generated method stub
-		/*
-		 * Member member = memberService.selectMember(); if (member.getToken()
-		 * != "0") { orders.setCreatorId(member.getId()); }
-		 */
+		if (!token.equals("0")) {
+			orders.setCreatorId(memberNo);
+		}
 		Map<String, Object> map = new HashMap<>(2);
 		List<Orders> list = this.ordersMapper.findPage(orders);
 		// 从第几条数据开始
@@ -56,6 +55,7 @@ public class OrdersServiceImpl implements IOrdersService {
 		// 到第几条数据结束
 		int lastIndex = 0;
 		if (list.size() > page * limit) {
+
 			lastIndex = page * limit;
 		} else {
 			lastIndex = list.size();
@@ -75,10 +75,14 @@ public class OrdersServiceImpl implements IOrdersService {
 	@Override
 	public boolean updateStatus(Orders orders) {
 		// TODO Auto-generated method stub
+		if (orders.getStatus() == 2) {
+			orders.setReceiptTime(new Date());
+		} else {
+			orders.setDeliveryTime(new Date());
+		}
 		Member member = memberService.selectMember();
 		orders.setModifierId(member.getId());
 		orders.setModifyTime(new Date());
-		orders.setReceiptTime(new Date());
 		if (ordersMapper.updateStatus(orders) > 0) {
 			return true;
 		} else {

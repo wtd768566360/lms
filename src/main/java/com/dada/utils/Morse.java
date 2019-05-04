@@ -19,7 +19,7 @@ public class Morse {
 	/* 摩斯加密 */
 	public String encryption(String password) {
 		Fence fence = new Fence();
-		password = fence.encryption(password);
+		password = fence.encryption(password);//调用了两次栅栏加密
 		password = fence.encryption(password);
 		String MorsePasswork = new String();
 		String mp = new String();

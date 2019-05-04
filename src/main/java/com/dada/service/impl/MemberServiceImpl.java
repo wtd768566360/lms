@@ -88,7 +88,7 @@ public class MemberServiceImpl implements IMemberService {
 	 *      java.lang.String)
 	 */
 	@Override
-	public boolean login(String member_no, String password) {
+	public Member login(String member_no, String password) {
 		// TODO Auto-generated method stub
 		HttpSession session = getRequest().getSession();
 		List<Member> memberList = memberMapper.selectAllInfo(new Member(null, member_no, null, null, null, null, null,
@@ -105,7 +105,7 @@ public class MemberServiceImpl implements IMemberService {
 				loginLogService.addLoginLog(new LoginLog(UUIDUtils.getUUID(), IPUtils.getIpAddr(getRequest()),
 						member.getMemberNo(), member.getRealname(), new Date(), getRequest().getRequestURI(), "登录",
 						"查询", "登录成功", "登录成功"));
-				return true;
+				return member;
 			} else {
 				loginLogService.addLoginLog(new LoginLog(UUIDUtils.getUUID(), IPUtils.getIpAddr(getRequest()),
 						member.getMemberNo(), member.getRealname(), new Date(), getRequest().getRequestURI(), "登录",
@@ -115,7 +115,7 @@ public class MemberServiceImpl implements IMemberService {
 			loginLogService.addLoginLog(new LoginLog(UUIDUtils.getUUID(), IPUtils.getIpAddr(getRequest()), null, null,
 					new Date(), getRequest().getRequestURI(), "登录", "查询", "登录失败", "没有此账号"));
 		}
-		return false;
+		return null;
 	}
 
 	/**
@@ -402,13 +402,12 @@ public class MemberServiceImpl implements IMemberService {
 	 * @see com.dada.service.IMemberService#updateHandUrl(java.lang.String)
 	 */
 	@Override
-	public boolean updateHandUrl(String path) {
+	public boolean updateHandUrl(String path, String id) {
 		// TODO Auto-generated method stub
-		Member member = memberService.selectMember();
-		Member newMember = new Member();
-		newMember.setHeadUrl(path);
-		newMember.setMemberNo(member.getMemberNo());
-		return memberService.updateInfo(newMember);
+		Member member = new Member();
+		member.setId(id);
+		member.setHeadUrl(path);
+		return memberMapper.updateInfoHandlr(member) > 0;
 	}
 
 	/**

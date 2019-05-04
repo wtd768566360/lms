@@ -14,6 +14,20 @@
 		<result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
 	</resultMap>
 
+	<select id="selectLine" parameterType="com.dada.entity.SysLine"
+		resultMap="BaseResultMap">
+		SELECT * from sys_line
+		WHERE is_deleted = 0 AND id = #{id}
+	</select>
+
+	<select id="selectStart" parameterType="com.dada.entity.SysLine"
+		resultMap="BaseResultMap">
+		SELECT * from sys_line
+		WHERE is_deleted = 0
+		<if test="lineStart != null">
+			AND line_start LIKE CONCAT('%', #{lineStart}, '%')
+		</if>
+	</select>
 	<select id="findPage" parameterType="com.dada.entity.SysLine"
 		resultMap="BaseResultMap">
 		SELECT

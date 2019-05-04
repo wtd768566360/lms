@@ -30,7 +30,6 @@ public class MyCORSFilter implements Filter{
             response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
             response.setHeader("Access-Control-Allow-Credentials","true");
             chain.doFilter(req, res);  
-          
     }  
   
     @Override  

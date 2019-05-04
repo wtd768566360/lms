@@ -61,8 +61,9 @@ public class MemberController {
 	@ResponseBody
 	public ServerResponse login(String member_no, String password) {
 		ServerResponse serverResponse = null;
-		if (memberService.login(member_no, password)) {
-			serverResponse = ServerResponse.createBySuccess("success");
+		Member member = memberService.login(member_no, password);
+		if (member != null) {
+			serverResponse = ServerResponse.createBySuccess("success", member);
 			logger.info("工号: " + member_no + "登录成功...");
 		} else {
 			serverResponse = ServerResponse.createByErrorMessage("登录失败,请检查工号、密码是否错误");
@@ -338,9 +339,9 @@ public class MemberController {
 	 */
 	@RequestMapping(value = "/memberPicture.do", method = { RequestMethod.POST })
 	@ResponseBody
-	public ServerResponse memberPicture(@RequestParam("file") MultipartFile multipartFile) {
+	public ServerResponse memberPicture(@RequestParam("file") MultipartFile multipartFile,String id) {
 		String path = memberService.memberPicture(multipartFile);
-		memberService.updateHandUrl(path);
+		memberService.updateHandUrl(path,id);
 		if (path != null) {
 			logger.info("用户更新了头像...成功 ");
 			return ServerResponse.createBySuccess("success", path);

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dada.common.ServerResponse;
 import com.dada.entity.Orders;
 import com.dada.model.OrderModel;
+import com.dada.service.ILineCarBindService;
 import com.dada.service.IOrdersService;
 
 /**
@@ -36,12 +37,15 @@ public class OrdersController {
 	@Autowired
 	private IOrdersService ordersService;
 
+	@Autowired
+	private ILineCarBindService lineCarBindService;
+
 	@RequestMapping(value = "/page.do", method = RequestMethod.GET)
 	@ResponseBody
-	public ServerResponse page(Orders orders, int page, int limit) {
-		Map<String, Object> map = this.ordersService.findPage(orders, page, limit);
+	public ServerResponse page(Orders orders, int page, int limit, String token, String memberNo1) {
+		Map<String, Object> map = this.ordersService.findPage(orders, page, limit, token, memberNo1);
 		if (map != null && !map.isEmpty()) {
-			this.logger.info("获取订单列表成功...");
+			this.logger.info(token + "获取订单列表成功...");
 			return ServerResponse.createByPageSuccess("获取订单列表成功", String.valueOf(map.get("totalCount")),
 					map.get("list"));
 		}
@@ -52,19 +56,33 @@ public class OrdersController {
 	@RequestMapping(value = "/add.do", method = RequestMethod.GET)
 	@ResponseBody
 	public ServerResponse add(OrderModel orderModel) {
-		
+
 		return ServerResponse.createByErrorMessage("获取线路列表失败");
 	}
 
 	@RequestMapping(value = "/update.do", method = RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse updateStatus(Orders orders) {
-		if(ordersService.updateStatus(orders)){
-			this.logger.info("修改订单状态失败...");
+		if (ordersService.updateStatus(orders)) {
+			this.logger.info("修改订单状态成功...");
 			return ServerResponse.createBySuccess();
-		}else{
+		} else {
 			this.logger.info("修改订单状态失败...");
 			return ServerResponse.createByErrorMessage("修改订单状态失败");
 		}
 	}
+
+	@RequestMapping(value = "/confirmGoods.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ServerResponse confirmGoods(String orderid, String carid, String lineid) {
+
+		if (lineCarBindService.addCarAndLine(orderid, carid, lineid)) {
+			this.logger.info("修改订单状态成功...");
+			return ServerResponse.createBySuccess();
+		} else {
+			this.logger.info("修改订单状态失败...");
+			return ServerResponse.createByErrorMessage("修改订单状态失败");
+		}
+	}
+
 }

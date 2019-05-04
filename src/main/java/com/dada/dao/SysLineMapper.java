@@ -17,4 +17,8 @@ public interface SysLineMapper {
 	int findPageByCount(SysLine sysLine);
 
 	int remove(SysLine sysLine);
+
+	List<SysLine> selectStart(SysLine sysLine);
+
+	SysLine selectLine(SysLine sysline);
 }

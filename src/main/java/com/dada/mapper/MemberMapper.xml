@@ -48,6 +48,11 @@
 		member_no=#{memberNo}
 	</update>
 
+	<update id="updateInfoHandlr" parameterType="com.dada.entity.Member">
+		UPDATE member SET
+		head_url = #{headUrl} WHERE id=#{id}
+	</update>
+
 	<!-- 修改用户密码 -->
 	<update id="updatePassword" parameterType="com.dada.entity.Member">
 		update member set

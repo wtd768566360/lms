@@ -3,7 +3,10 @@
  */
 package com.dada.service;
 
+import java.util.List;
 import java.util.Map;
+
+import javax.sound.sampled.Line;
 
 import com.dada.entity.SysLine;
 import com.dada.entity.SysStations;
@@ -24,5 +27,9 @@ public interface ISysLineService {
 	Map<String, Object> findPage(SysLine sysLine, int page, int limit);
 
 	boolean remove(String id, String userId);
+
+	List<SysLine> selectStart();
+
+	SysLine selectLine(SysLine sysline);
 
 }

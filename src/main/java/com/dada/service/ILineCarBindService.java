@@ -13,4 +13,6 @@ package com.dada.service;
  */
 public interface ILineCarBindService {
 
+	boolean addCarAndLine(String orderid, String carid, String lineid);
+
 }

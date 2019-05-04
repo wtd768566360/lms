@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.sound.sampled.Line;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 import com.dada.dao.SysLineMapper;
 import com.dada.entity.Member;
 import com.dada.entity.SysLine;
-import com.dada.entity.SysStations;
 import com.dada.service.IMemberService;
 import com.dada.service.ISysLineService;
 import com.dada.utils.UUIDUtils;
@@ -102,4 +102,29 @@ public class SysLineServiceImpl implements ISysLineService {
 		return sysLineMapper.remove(sysLine) > 0;
 	}
 
+	/**
+	 * <B>方法名称：</B><BR>
+	 * <B>概要说明：</B><BR>
+	 * 
+	 * @see com.dada.service.ISysLineService#selectStart()
+	 */
+	@Override
+	public List<SysLine> selectStart() {
+		// TODO Auto-generated method stub
+		String start = "郑州市";
+		SysLine sysLine = new SysLine();
+		sysLine.setLineStart(start);
+		return sysLineMapper.selectStart(sysLine);
+	}
+
+	/**
+	 * <B>概要说明：</B><BR>
+	 * 
+	 * @see com.dada.service.ISysLineService#selectLine(com.dada.entity.SysLine)
+	 */
+	@Override
+	public SysLine selectLine(SysLine sysline) {
+		// TODO Auto-generated method stub
+		return sysLineMapper.selectLine(sysline);
+	}
 }
