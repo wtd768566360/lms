@@ -49,4 +49,5 @@ public interface IMemberService {
 
 	boolean updateHandUrl(String path);
 
+	List<Member> selectConditionsAllMamber(Member member);
 }

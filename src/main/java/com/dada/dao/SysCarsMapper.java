@@ -13,9 +13,12 @@ public interface SysCarsMapper {
 
 	boolean insertSelective(SysCars record);
     
-    
     List<Map<String, Object>> selectAllInfo(SysCars record);
     
     boolean updateInfo(SysCars record);
+
+	SysCars selectInfo(SysCars cars);
+
+	List<SysCars> selectAllCar();
     
 }

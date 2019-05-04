@@ -44,7 +44,7 @@ public class SysStationsController {
 		return ServerResponse.createByErrorMessage("添加站点失败");
 	}
 
-	@RequestMapping(value = "/delete.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/delete.do", method = RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse delete(String id) {
 		String userId = "";

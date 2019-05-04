@@ -350,4 +350,25 @@ public class MemberController {
 		}
 	}
 
+	/**
+	 * <B>概要说明：查询员工所有</B><BR>
+	 * 
+	 * @param member
+	 * @return
+	 */
+	@RequestMapping(value = "selectAllMemberinfo.do", method = { RequestMethod.GET })
+	@ResponseBody
+	public ServerResponse selectAllMemberinfo(Member member) {
+		ServerResponse serverResponse = null;
+		List<Member> MemberAll = memberService.selectConditionsAllMamber(member);
+		if (!StringUtils.isEmpty(MemberAll)) {
+			serverResponse = ServerResponse.createBySuccess("success", MemberAll);
+			logger.info("员工信息查询成功...");
+		} else {
+			serverResponse = ServerResponse.createByErrorMessage("查询失败");
+			logger.info("员工信息查询失败");
+		}
+		return serverResponse;
+	}
+
 }

@@ -38,9 +38,9 @@ public class SysStationsServiceImpl implements ISysStationsService {
 	public boolean insert(SysStations sysStations) {
 		Member member = memberService.selectMember();
 		sysStations.setId(UUIDUtils.getUUID());
-		sysStations.setCreatorId(member.getId()); 
-		sysStations.setModifierId(member.getId()); 
-		sysStations.setIsDeleted(false); 
+		sysStations.setCreatorId(member.getId());
+		sysStations.setModifierId(member.getId());
+		sysStations.setIsDeleted(false);
 		sysStations.setCreateTime(new Date());
 		sysStations.setModifyTime(new Date());
 		return this.sysStationsMapper.insert(sysStations) > 0;
@@ -71,8 +71,17 @@ public class SysStationsServiceImpl implements ISysStationsService {
 	public Map<String, Object> findPage(SysStations sysStations, int currentPage, int pageSize) {
 		Map<String, Object> map = new HashMap<>(2);
 		List<SysStations> list = this.sysStationsMapper.findPage(sysStations);
+		// 从第几条数据开始
+		int firstIndex = (currentPage - 1) * (pageSize);
+		// 到第几条数据结束
+		int lastIndex = 0;
+		if (list.size() > currentPage * pageSize) {
+			lastIndex = currentPage * pageSize;
+		} else {
+			lastIndex = list.size();
+		}
 		int count = this.sysStationsMapper.findPageByCount(sysStations);
-		map.put("list", list);
+		map.put("list", list.subList(firstIndex, lastIndex));
 		map.put("totalCount", count);
 		return map;
 	}

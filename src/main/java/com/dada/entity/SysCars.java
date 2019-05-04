@@ -12,8 +12,18 @@ public class SysCars {
      * 司机
      */
     private String memberId;
+    private String memberName;
+    
 
-    /**
+    public String getMemberName() {
+		return memberName;
+	}
+
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
+
+	/**
      * 车牌
      */
     private String licencePlate;

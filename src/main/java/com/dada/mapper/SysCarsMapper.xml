@@ -1,147 +1,167 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dada.dao.SysCarsMapper">
-  <resultMap id="BaseResultMap" type="com.dada.entity.SysCars">
-    <result column="id" jdbcType="VARCHAR" property="id" />
-    <result column="member_id" jdbcType="VARCHAR" property="memberId" />
-    <result column="licence_plate" jdbcType="VARCHAR" property="licencePlate" />
-    <result column="car_type" jdbcType="INTEGER" property="carType" />
-    <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
-    <result column="creator_id" jdbcType="VARCHAR" property="creatorId" />
-    <result column="modifier_id" jdbcType="VARCHAR" property="modifierId" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
-  </resultMap>
-   <update id="updateInfo" parameterType="com.dada.entity.SysCars">
-  	update sys_cars
-  	<set>
-  		<if test="memberId!=null and memberId!=''">member_id=#{memberId},</if>
-  		<if test="licencePlate!=null and licencePlate!=''">licence_plate=#{licencePlate},</if>
-  		<if test="carType!=null and carType>0">car_type=#{carType},</if>
-  		<if test="status!=null and status>0">status=#{status},</if>
-  		<if test="remark!=null and remark!=''">remark=#{remark},</if>
-  		<if test="isDeleted!=null">is_deleted=#{isDeleted},</if>
-  		<if test="creatorId!=null and creatorId!=''">creator_id=#{creatorId},</if>
-  		<if test="modifierId!=null and modifierId!=''">modifier_id=#{modifierId},</if>
-  		<if test="createTime!=null">create_time=#{createTime},</if>
-  		<if test="modifyTime!=null">modify_time=#{modifyTime}</if>
-  	</set>
-  	<where>
-  		id=#{id}
-  	</where>
-  </update>
-  <select id="selectAllInfo" parameterType="com.dada.entity.SysCars" resultType="java.util.Map">
-	  	select cars.id,cars.licence_plate, cars.car_type,cars.status,cars.remark,
-	cars.is_deleted,cars.creator_id,cars.modifier_id,cars.create_time,cars.modify_time,m.id mid,m.realname
-	from sys_cars cars 
-	left join member m
-	on cars.member_id=m.id
-  	<where>
-  		<!-- 按id查询  (用在获取单个信息) -->
-  		<if test="id!=null and id!=''">
-  			cars.id=#{id}
-  		</if>
-  		<!-- 按汽车车牌号查询 -->
-  		<if test="licencePlate!=null and licencePlate!=''">
-  			and cars.licence_plate=#{licencePlate}
-  		</if>
-  		<!-- 按汽车类型查询 -->
-  		<if test="carType!=null and carType>=0">
-  			and cars.car_type=#{carType}
-  		</if>
-  		<!-- 按司机查询 -->
-  		<if test="memberId!=null and memberId>0">
-  			and cars.member_id=#{memberId}
-  		</if>
-  	</where>
-  </select>
-  
- 
-  
-  
-  <insert id="insert" parameterType="com.dada.entity.SysCars">
-    insert into sys_cars (id, member_id, licence_plate, 
-      car_type, status, remark, 
-      is_deleted, creator_id, modifier_id, 
-      create_time, modify_time)
-    values (#{id,jdbcType=VARCHAR}, #{memberId,jdbcType=VARCHAR}, #{licencePlate,jdbcType=VARCHAR}, 
-      #{carType,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
-      #{isDeleted,jdbcType=BIT}, #{creatorId,jdbcType=VARCHAR}, #{modifierId,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" parameterType="com.dada.entity.SysCars">
-    insert into sys_cars
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="memberId != null">
-        member_id,
-      </if>
-      <if test="licencePlate != null">
-        licence_plate,
-      </if>
-      <if test="carType != null">
-        car_type,
-      </if>
-      <if test="status != null">
-        status,
-      </if>
-      <if test="remark != null">
-        remark,
-      </if>
-      <if test="isDeleted != null">
-        is_deleted,
-      </if>
-      <if test="creatorId != null">
-        creator_id,
-      </if>
-      <if test="modifierId != null">
-        modifier_id,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="modifyTime != null">
-        modify_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=VARCHAR},
-      </if>
-      <if test="memberId != null">
-        #{memberId,jdbcType=VARCHAR},
-      </if>
-      <if test="licencePlate != null">
-        #{licencePlate,jdbcType=VARCHAR},
-      </if>
-      <if test="carType != null">
-        #{carType,jdbcType=INTEGER},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="remark != null">
-        #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="isDeleted != null">
-        #{isDeleted,jdbcType=BIT},
-      </if>
-      <if test="creatorId != null">
-        #{creatorId,jdbcType=VARCHAR},
-      </if>
-      <if test="modifierId != null">
-        #{modifierId,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modifyTime != null">
-        #{modifyTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
+	<resultMap id="BaseResultMap" type="com.dada.entity.SysCars">
+		<result column="id" jdbcType="VARCHAR" property="id" />
+		<result column="member_id" jdbcType="VARCHAR" property="memberId" />
+		<result column="licence_plate" jdbcType="VARCHAR" property="licencePlate" />
+		<result column="car_type" jdbcType="INTEGER" property="carType" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+		<result column="creator_id" jdbcType="VARCHAR" property="creatorId" />
+		<result column="modifier_id" jdbcType="VARCHAR" property="modifierId" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+	</resultMap>
+	<update id="updateInfo" parameterType="com.dada.entity.SysCars">
+		update sys_cars
+		<set>
+			<if test="memberId!=null and memberId!=''">member_id=#{memberId},</if>
+			<if test="licencePlate!=null and licencePlate!=''">licence_plate=#{licencePlate},</if>
+			<if test="carType!=null and carType>0">car_type=#{carType},</if>
+			<if test="status!=null and status>0">status=#{status},</if>
+			<if test="remark!=null and remark!=''">remark=#{remark},</if>
+			<if test="isDeleted!=null">is_deleted=#{isDeleted},</if>
+			<if test="creatorId!=null and creatorId!=''">creator_id=#{creatorId},</if>
+			<if test="modifierId!=null and modifierId!=''">modifier_id=#{modifierId},</if>
+			<if test="createTime!=null">create_time=#{createTime},</if>
+			<if test="modifyTime!=null">modify_time=#{modifyTime}</if>
+		</set>
+		<where>
+			id=#{id}
+		</where>
+	</update>
+	<select id="selectAllInfo" parameterType="com.dada.entity.SysCars"
+		resultType="java.util.Map">
+		select cars.id,cars.licence_plate,
+		cars.car_type,cars.status,cars.remark,
+		cars.is_deleted,cars.creator_id,cars.modifier_id,cars.create_time,cars.modify_time,m.id
+		mid,m.realname
+		from sys_cars cars
+		left join member m
+		on
+		cars.member_id=m.id
+		<where>
+			cars.is_deleted = 0
+			<!-- 按id查询 (用在获取单个信息) -->
+			<if test="id!=null and id!=''">
+				and cars.id=#{id}
+			</if>
+			<!-- 按汽车车牌号查询 -->
+			<if test="licencePlate!=null and licencePlate!=''">
+				and cars.licence_plate like "%"#{licencePlate}"%"
+			</if>
+			<!-- 按汽车类型查询 -->
+			<if test="carType!=null and carType>=0">
+				and cars.car_type=#{carType}
+			</if>
+			<!-- 按司机查询 -->
+			<if test="memberName!=null and memberName!=''">
+				and m.realname=#{memberName}
+			</if>
+
+		</where>
+	</select>
+
+	<select id="selectInfo" parameterType="com.dada.entity.SysCars"
+		resultMap="BaseResultMap">
+		SELECT * FROM sys_cars WHERE id = #{id}
+	</select>
+
+	<select id="selectAllCar" parameterType="com.dada.entity.SysCars"
+		resultMap="BaseResultMap">
+		SELECT * FROM sys_cars where is_deleted = 0
+	</select>
+
+	<insert id="insert" parameterType="com.dada.entity.SysCars">
+		insert into sys_cars (id,
+		member_id, licence_plate,
+		car_type, status, remark,
+		is_deleted,
+		creator_id, modifier_id,
+		create_time, modify_time)
+		values
+		(#{id,jdbcType=VARCHAR}, #{memberId,jdbcType=VARCHAR},
+		#{licencePlate,jdbcType=VARCHAR},
+		#{carType,jdbcType=INTEGER},
+		#{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
+		#{isDeleted,jdbcType=BIT}, #{creatorId,jdbcType=VARCHAR},
+		#{modifierId,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{modifyTime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.dada.entity.SysCars">
+		insert into sys_cars
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="memberId != null">
+				member_id,
+			</if>
+			<if test="licencePlate != null">
+				licence_plate,
+			</if>
+			<if test="carType != null">
+				car_type,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="isDeleted != null">
+				is_deleted,
+			</if>
+			<if test="creatorId != null">
+				creator_id,
+			</if>
+			<if test="modifierId != null">
+				modifier_id,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="modifyTime != null">
+				modify_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="memberId != null">
+				#{memberId,jdbcType=VARCHAR},
+			</if>
+			<if test="licencePlate != null">
+				#{licencePlate,jdbcType=VARCHAR},
+			</if>
+			<if test="carType != null">
+				#{carType,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="isDeleted != null">
+				#{isDeleted,jdbcType=BIT},
+			</if>
+			<if test="creatorId != null">
+				#{creatorId,jdbcType=VARCHAR},
+			</if>
+			<if test="modifierId != null">
+				#{modifierId,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyTime != null">
+				#{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
 </mapper>

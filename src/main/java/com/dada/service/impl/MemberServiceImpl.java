@@ -410,4 +410,12 @@ public class MemberServiceImpl implements IMemberService {
 		newMember.setMemberNo(member.getMemberNo());
 		return memberService.updateInfo(newMember);
 	}
+
+	/**
+	 * 查询所有员工
+	 */
+	@Override
+	public List<Member> selectConditionsAllMamber(Member member) {
+		return memberMapper.selectAllInfo(member);
+	}
 }

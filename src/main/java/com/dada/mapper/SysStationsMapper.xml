@@ -1,175 +1,175 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dada.dao.SysStationsMapper">
-  <resultMap id="BaseResultMap" type="com.dada.entity.SysStations">
-    <result column="id" jdbcType="VARCHAR" property="id" />
-    <result column="station_name" jdbcType="VARCHAR" property="stationName" />
-    <result column="member_id" jdbcType="VARCHAR" property="memberId" />
-    <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
-    <result column="creator_id" jdbcType="VARCHAR" property="creatorId" />
-    <result column="modifier_id" jdbcType="VARCHAR" property="modifierId" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
-  </resultMap>
-  <insert id="insert" parameterType="com.dada.entity.SysStations">
-    insert into sys_stations (id, station_name, member_id, 
-      status, remark, is_deleted, 
-      creator_id, modifier_id, create_time, 
-      modify_time)
-    values (#{id,jdbcType=VARCHAR}, #{stationName,jdbcType=VARCHAR}, #{memberId,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{isDeleted,jdbcType=BIT}, 
-      #{creatorId,jdbcType=VARCHAR}, #{modifierId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{modifyTime,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" parameterType="com.dada.entity.SysStations">
-    insert into sys_stations
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="stationName != null">
-        station_name,
-      </if>
-      <if test="memberId != null">
-        member_id,
-      </if>
-      <if test="status != null">
-        status,
-      </if>
-      <if test="remark != null">
-        remark,
-      </if>
-      <if test="isDeleted != null">
-        is_deleted,
-      </if>
-      <if test="creatorId != null">
-        creator_id,
-      </if>
-      <if test="modifierId != null">
-        modifier_id,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="modifyTime != null">
-        modify_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=VARCHAR},
-      </if>
-      <if test="stationName != null">
-        #{stationName,jdbcType=VARCHAR},
-      </if>
-      <if test="memberId != null">
-        #{memberId,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="remark != null">
-        #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="isDeleted != null">
-        #{isDeleted,jdbcType=BIT},
-      </if>
-      <if test="creatorId != null">
-        #{creatorId,jdbcType=VARCHAR},
-      </if>
-      <if test="modifierId != null">
-        #{modifierId,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modifyTime != null">
-        #{modifyTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
+	<resultMap id="BaseResultMap" type="com.dada.entity.SysStations">
+		<result column="id" jdbcType="VARCHAR" property="id" />
+		<result column="station_name" jdbcType="VARCHAR" property="stationName" />
+		<result column="address" jdbcType="VARCHAR" property="address" />
+		<result column="member_id" jdbcType="VARCHAR" property="memberId" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+		<result column="creator_id" jdbcType="VARCHAR" property="creatorId" />
+		<result column="modifier_id" jdbcType="VARCHAR" property="modifierId" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+	</resultMap>
+	<insert id="insert" parameterType="com.dada.entity.SysStations">
+		insert into sys_stations (id,
+		station_name, address,member_id,
+		status, remark, is_deleted,
+		creator_id,
+		modifier_id, create_time,
+		modify_time)
+		values
+		(#{id,jdbcType=VARCHAR},
+		#{stationName,jdbcType=VARCHAR},
+		#{address,jdbcType=VARCHAR},
+		#{memberId,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER},
+		#{remark,jdbcType=VARCHAR},
+		#{isDeleted,jdbcType=BIT},
+		#{creatorId,jdbcType=VARCHAR},
+		#{modifierId,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{modifyTime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.dada.entity.SysStations">
+		insert into sys_stations
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="stationName != null">
+				station_name,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="memberId != null">
+				member_id,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="isDeleted != null">
+				is_deleted,
+			</if>
+			<if test="creatorId != null">
+				creator_id,
+			</if>
+			<if test="modifierId != null">
+				modifier_id,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="modifyTime != null">
+				modify_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="stationName != null">
+				#{stationName,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="memberId != null">
+				#{memberId,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="isDeleted != null">
+				#{isDeleted,jdbcType=BIT},
+			</if>
+			<if test="creatorId != null">
+				#{creatorId,jdbcType=VARCHAR},
+			</if>
+			<if test="modifierId != null">
+				#{modifierId,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyTime != null">
+				#{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
 
-  <update id="update" parameterType="com.dada.entity.SysStations">
-  UPDATE sys_stations
-  <set>
-    <if test="stationName != null">
-      station_name = #{stationName},
-    </if>
-    <if test="memberId != null">
-      member_id = #{memberId},
-    </if>
-    <if test="status != null">
-      status = #{status},
-    </if>
-    <if test="remark != null">
-      remark = #{remark},
-    </if>
-    <if test="modifierId != null">
-      modifier_id = #{modifierId},
-    </if>
-    <if test="modifyTime != null">
-      modify_time = #{modifyTime}
-    </if>
-  </set>
-  WHERE is_deleted = 0
-  AND id = #{id}
-  </update>
+	<update id="update" parameterType="com.dada.entity.SysStations">
+		UPDATE sys_stations
+		<set>
+			<if test="stationName != null">
+				station_name = #{stationName},
+			</if>
+			<if test="memberId != null">
+				member_id = #{memberId},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="remark != null">
+				remark = #{remark},
+			</if>
+			<if test="modifierId != null">
+				modifier_id = #{modifierId},
+			</if>
+			<if test="modifyTime != null">
+				modify_time = #{modifyTime}
+			</if>
+		</set>
+		WHERE is_deleted = 0
+		AND id = #{id}
+	</update>
 
-  <update id="remove" parameterType="com.dada.entity.SysStations">
-    UPDATE sys_stations SET is_deleted = 1, modify_time = #{modifyTime} WHERE is_deleted = 0 AND id = #{id}
-  </update>
-  
-  <select id="list" parameterType="java.util.Map" resultMap="BaseResultMap">
-    SELECT
-    id,
-    station_name,
-    member_id,
-    status,
-    remark,
-    creator_id,
-    modifier_id,
-    create_time,
-    modify_time
-    FROM sys_stations
-    WHERE is_deleted = 0
-    <if test="stationName != null">
-      AND station_name LIKE CONCAT('%', #{stationName}, '%')
-    </if>
-  </select>
+	<update id="remove" parameterType="com.dada.entity.SysStations">
+		UPDATE sys_stations SET
+		is_deleted = 1,modifier_id = #{modifierId},
+		modify_time = #{modifyTime}
+		WHERE is_deleted = 0 AND id = #{id}
+	</update>
 
-  <select id="findPage" parameterType="com.dada.entity.SysStations" resultMap="BaseResultMap">
-    SELECT
-    id,
-    station_name,
-    member_id,
-    status,
-    remark,
-    creator_id,
-    modifier_id,
-    create_time,
-    modify_time
-    FROM sys_stations
-    WHERE is_deleted = 0
-    <if test="stationName != null">
-      AND station_name LIKE CONCAT('%', #{stationName}, '%')
-    </if>
-    <if test="memberId != null">
-      AND member_id in(select id FROM member where realname LIKE CONCAT('%', #{memberId}, '%'))
-    </if>
-  </select>
+	<select id="list" parameterType="java.util.Map" resultMap="BaseResultMap">
+		SELECT
+		*
+		FROM sys_stations
+		WHERE is_deleted = 0
+		<if test="stationName != null">
+			AND station_name LIKE CONCAT('%', #{stationName}, '%')
+		</if>
+	</select>
 
-  <select id="findPageByCount" parameterType="com.dada.entity.SysStations" resultType="java.lang.Integer">
-    SELECT
-    COUNT(id)
-    FROM sys_stations
-    WHERE is_deleted = 0
-    <if test="stationName != null">
-      AND station_name LIKE CONCAT('%', #{stationName}, '%')
-    </if>
-    <if test="memberId != null">
-      AND member_id in(select id FROM member where realname LIKE CONCAT('%', #{memberId}, '%'))
-    </if>
-  </select>
+	<select id="findPage" parameterType="com.dada.entity.SysStations"
+		resultMap="BaseResultMap">
+		SELECT
+		*
+		FROM sys_stations
+		WHERE is_deleted = 0
+		<if test="stationName != null">
+			AND station_name LIKE CONCAT('%', #{stationName}, '%')
+		</if>
+	</select>
+
+	<select id="findPageByCount" parameterType="com.dada.entity.SysStations"
+		resultType="java.lang.Integer">
+		SELECT
+		COUNT(id)
+		FROM sys_stations
+		WHERE is_deleted = 0
+		<if test="stationName != null">
+			AND station_name LIKE CONCAT('%', #{stationName}, '%')
+		</if>
+	</select>
 </mapper>
