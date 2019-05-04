@@ -62,6 +62,7 @@ public class LineCarBindServiceImpl implements ILineCarBindService {
 			Orders orders = new Orders();
 			orders.setId(orderid);
 			orders.setStatus(1);
+			orders.setCarId(lineCarBind.getId());
 			if (ordersService.updateStatus(orders)) {
 				return true;
 			} else {
