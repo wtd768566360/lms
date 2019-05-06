@@ -3,6 +3,7 @@
  */
 package com.dada.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -96,9 +97,7 @@ public class OrdersController {
 	@RequestMapping(value = "inserOrders.do", method = { RequestMethod.POST })
 	@ResponseBody
 	public ServerResponse insertOrders1(@RequestBody String o) {
-		
 		o=o.substring(1, o.length()-1);
-		System.out.println(o);
 		Orders order = JSON.parseObject(o, Orders.class);
 		ServerResponse serverresponse = null;
 		boolean bool=ordersService.insertOrder(order);
@@ -108,6 +107,23 @@ public class OrdersController {
 		}else {
 			logger.info("增加车辆信息失败");
 			serverresponse = ServerResponse.createBySuccessMessage("增加车辆信息失败");
+		}
+		return serverresponse;
+	}
+	
+	@RequestMapping(value="selectCount.do",method=RequestMethod.GET)
+	@ResponseBody
+	public ServerResponse selectCount(String year) {
+		String[] s = year.split("-");
+		ServerResponse serverresponse=null;
+		List<Map<String, Object>> orders=ordersService.selectCount(s[0], s[1]);
+		//System.out.println(orders);
+		if(orders.size()>0) {
+			logger.info("统计查询成功");
+			serverresponse = ServerResponse.createBySuccess("统计查询成功",orders);
+		}else {
+			logger.info("统计查询失败");
+			serverresponse = ServerResponse.createByErrorMessage("统计查询失败");
 		}
 		return serverresponse;
 	}

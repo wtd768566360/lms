@@ -3,6 +3,7 @@
  */
 package com.dada.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.dada.entity.Orders;
@@ -24,4 +25,5 @@ public interface IOrdersService {
 	
 	boolean insertOrder(Orders order);
 
+	List<Map<String, Object>> selectCount(String year,String item);
 }

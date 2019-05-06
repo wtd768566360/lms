@@ -1,6 +1,7 @@
 package com.dada.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -17,4 +18,6 @@ public interface OrdersMapper {
 	int findPageByCount(Orders orders);
 
 	int updateStatus(Orders orders);
+	
+	Integer selectCount(Map<String, Object> map);
 }

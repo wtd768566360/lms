@@ -3,6 +3,7 @@
  */
 package com.dada.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -146,5 +147,37 @@ public class OrdersServiceImpl implements IOrdersService {
 		}
 		
 		return true;
+	}
+
+	
+	@Override
+	public List<Map<String, Object>> selectCount(String year,String item) {
+		Map<String, Object> map=new HashMap<String, Object>();
+		List<Map<String, Object>> m=new ArrayList<Map<String,Object>>();
+		map.put("year", year);
+		int start=0;
+		int end=0;
+		if(item.equals("0")) {
+			start=1;
+			end=6;
+		}else if(item.equals("6")) {
+			start=7;
+			end=12;
+		}else if(item.equals("12")) {
+			start=1;
+			end=12;
+		}
+		
+		int i=0;
+		int count=0;
+		for(i=start;i<=end;i++) {
+			map.put("month", i);
+			count=ordersMapper.selectCount(map);
+			Map<String, Object> ret=new HashMap<String, Object>();
+			ret.put("month", i);
+			ret.put("data", count);
+			m.add(ret);
+		}
+		return m;
 	}
 }
