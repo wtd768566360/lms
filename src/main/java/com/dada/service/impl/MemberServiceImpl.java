@@ -417,4 +417,15 @@ public class MemberServiceImpl implements IMemberService {
 	public List<Member> selectConditionsAllMamber(Member member) {
 		return memberMapper.selectAllInfo(member);
 	}
+
+	/**
+	 * <B>方法名称：</B><BR>
+	 * <B>概要说明：</B><BR>
+	 * @see com.dada.service.IMemberService#memberCount()
+	 */
+	@Override
+	public int memberCount() {
+		// TODO Auto-generated method stub
+		return memberMapper.memberCount();
+	}
 }

@@ -50,4 +50,6 @@ public interface IMemberService {
 	boolean updateHandUrl(String path,String id);
 
 	List<Member> selectConditionsAllMamber(Member member);
+
+	int memberCount();
 }

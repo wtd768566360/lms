@@ -30,4 +30,6 @@ public interface MemberMapper {
 	boolean updateLastTime(Member updateMember);
 
 	int updateInfoHandlr(Member member);
+
+	int memberCount();
 }

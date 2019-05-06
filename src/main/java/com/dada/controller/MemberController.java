@@ -21,10 +21,8 @@ import com.dada.service.IMemberService;
 
 import org.slf4j.LoggerFactory;
 
-
 import java.util.Date;
 import java.util.List;
-
 
 import org.slf4j.Logger;
 
@@ -338,9 +336,9 @@ public class MemberController {
 	 */
 	@RequestMapping(value = "/memberPicture.do", method = { RequestMethod.POST })
 	@ResponseBody
-	public ServerResponse memberPicture(@RequestParam("file") MultipartFile multipartFile,String id) {
+	public ServerResponse memberPicture(@RequestParam("file") MultipartFile multipartFile, String id) {
 		String path = memberService.memberPicture(multipartFile);
-		memberService.updateHandUrl(path,id);
+		memberService.updateHandUrl(path, id);
 		if (path != null) {
 			logger.info("用户更新了头像...成功 ");
 			return ServerResponse.createBySuccess("success", path);
@@ -371,4 +369,16 @@ public class MemberController {
 		return serverResponse;
 	}
 
+	@RequestMapping(value = "memberCount.do", method = { RequestMethod.GET })
+	@ResponseBody
+	public ServerResponse memberCount() {
+		int count = memberService.memberCount();
+		if (count > 0) {
+			logger.info("员工总数查询成功...");
+			return ServerResponse.createBySuccess("success", count);
+		} else {
+			logger.info("员工总数查询失败");
+			return ServerResponse.createByErrorMessage("查询失败");
+		}
+	}
 }
