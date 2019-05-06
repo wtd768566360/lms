@@ -3,6 +3,9 @@
  */
 package com.dada.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -46,6 +49,11 @@ public class OperationLogServiceImpl implements IOperationLogService {
 	public int addOperationLog(OperationLog operationLog) {
 		// TODO Auto-generated method stub
 		return operationLogMapper.insertSelective(operationLog);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectLoginfo() {
+		return operationLogMapper.selectLoginfo();
 	}
 
 }

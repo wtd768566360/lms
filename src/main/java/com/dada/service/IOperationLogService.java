@@ -3,6 +3,9 @@
  */
 package com.dada.service;
 
+import java.util.List;
+import java.util.Map;
+
 import com.dada.entity.OperationLog;
 
 /**
@@ -19,4 +22,7 @@ public interface IOperationLogService {
 	boolean selectDateLperationLog(String startDate, String endDate);
 
 	int addOperationLog(OperationLog operationLog);
+	
+	
+	List<Map<String, Object>>    selectLoginfo();
 }

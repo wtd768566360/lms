@@ -12,6 +12,14 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
+  
+  <select id="selectLoginfo" resultType="java.util.Map">
+  	select * from (select login_name,login_time,status from login_log
+	union
+	select member_name,create_time,operation from operation_log 
+	)as log
+	where date(log.login_time)=date(now())
+  </select>
   <insert id="insert" parameterType="com.dada.entity.OperationLog">
     insert into operation_log (id, member_id, member_name, 
       access_ip, access_uri, operation, 
