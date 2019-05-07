@@ -23,7 +23,6 @@
 		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
 	</resultMap>
-
 	<select id="selectCount" parameterType="java.util.Map" resultType="java.lang.Integer">
 		select count(*) from orders where year(create_time)=#{year} and month(create_time)=#{month}
 	</select>

@@ -79,7 +79,6 @@ public class OrdersController {
 		}
 	}
 
-
 	@RequestMapping(value = "/confirmGoods.do", method = RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse confirmGoods(String orderid, String carid, String lineid) {
@@ -93,38 +92,53 @@ public class OrdersController {
 		}
 	}
 
-	
 	@RequestMapping(value = "inserOrders.do", method = { RequestMethod.POST })
 	@ResponseBody
 	public ServerResponse insertOrders1(@RequestBody String o) {
-		o=o.substring(1, o.length()-1);
+		o = o.substring(1, o.length() - 1);
 		Orders order = JSON.parseObject(o, Orders.class);
 		ServerResponse serverresponse = null;
-		boolean bool=ordersService.insertOrder(order);
-		if(bool) {
+		boolean bool = ordersService.insertOrder(order);
+		if (bool) {
 			logger.info("增加订单信息成功");
 			serverresponse = ServerResponse.createBySuccessMessage("增加订单信息成功");
-		}else {
+		} else {
 			logger.info("增加车辆信息失败");
 			serverresponse = ServerResponse.createBySuccessMessage("增加车辆信息失败");
 		}
 		return serverresponse;
 	}
-	
-	@RequestMapping(value="selectCount.do",method=RequestMethod.GET)
+
+	@RequestMapping(value = "selectCount.do", method = RequestMethod.GET)
 	@ResponseBody
 	public ServerResponse selectCount(String year) {
 		String[] s = year.split("-");
-		ServerResponse serverresponse=null;
-		List<Map<String, Object>> orders=ordersService.selectCount(s[0], s[1]);
-		//System.out.println(orders);
-		if(orders.size()>0) {
+		ServerResponse serverresponse = null;
+		List<Map<String, Object>> orders = ordersService.selectCount(s[0], s[1]);
+		// System.out.println(orders);
+		if (orders.size() > 0) {
 			logger.info("统计查询成功");
-			serverresponse = ServerResponse.createBySuccess("统计查询成功",orders);
-		}else {
+			serverresponse = ServerResponse.createBySuccess("统计查询成功", orders);
+		} else {
 			logger.info("统计查询失败");
 			serverresponse = ServerResponse.createByErrorMessage("统计查询失败");
 		}
 		return serverresponse;
+	}
+
+	/**
+	 * <B>概要说明：取消订单</B><BR>
+	 * 
+	 * @param year
+	 * @return
+	 */
+	@RequestMapping(value = "cancel.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ServerResponse cancel(Orders order) {
+		if (ordersService.removeOrder(order)) {
+			return ServerResponse.createBySuccess("success", null);
+		} else {
+			return ServerResponse.createBySuccess("success", null);
+		}
 	}
 }

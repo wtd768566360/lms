@@ -19,11 +19,13 @@ import com.dada.entity.Orders;
  */
 public interface IOrdersService {
 
-	Map<String, Object> findPage(Orders orders, int page, int limit, String token,String memberNo);
+	Map<String, Object> findPage(Orders orders, int page, int limit, String token, String memberNo);
 
 	boolean updateStatus(Orders orders);
-	
+
 	boolean insertOrder(Orders order);
 
-	List<Map<String, Object>> selectCount(String year,String item);
+	List<Map<String, Object>> selectCount(String year, String item);
+
+	boolean removeOrder(Orders order);
 }

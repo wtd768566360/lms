@@ -51,6 +51,7 @@ public class OrdersServiceImpl implements IOrdersService {
 	private ISysStationsService sysStationsService;
 	@Autowired
 	private IOperationLogService operationLogService;
+
 	/**
 	 * <B>概要说明：分页</B><BR>
 	 * 
@@ -116,68 +117,83 @@ public class OrdersServiceImpl implements IOrdersService {
 		order.setStatus(0);
 		order.setCreatorId(member.getId());
 		order.setCreateTime(new Date());
-		int res=ordersMapper.insertSelective(order);
-		if(res>0) {
+		int res = ordersMapper.insertSelective(order);
+		if (res > 0) {
 			operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), member.getMemberNo(),
-					member.getRealname(), IPUtils.getIpAddr(MemberServiceImpl.getRequest()), MemberServiceImpl.getRequest().getRequestURI(), "增加订单",
-					"增加", "增加订单成功", new Date()));
-			for(OrderHistory h:order.getOrderhistorys()) {
+					member.getRealname(), IPUtils.getIpAddr(MemberServiceImpl.getRequest()),
+					MemberServiceImpl.getRequest().getRequestURI(), "增加订单", "增加", "增加订单成功", new Date()));
+			for (OrderHistory h : order.getOrderhistorys()) {
 				h.setId(UUIDUtils.getUUID());
-				//订单id
+				// 订单id
 				h.setOrderId(order.getId());
 				h.setInTime(new Date());
 				h.setStatus(0);
 				h.setCreatorId(member.getId());
 				h.setCreateTime(new Date());
-				int s=orderhistorymapper.insertSelective(h);
-				if(s>0) {
+				int s = orderhistorymapper.insertSelective(h);
+				if (s > 0) {
 					operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), member.getMemberNo(),
-							member.getRealname(), IPUtils.getIpAddr(MemberServiceImpl.getRequest()), MemberServiceImpl.getRequest().getRequestURI(), "增加订单信息",
-							"增加", "增加订单信息成功", new Date()));
-				}else {
+							member.getRealname(), IPUtils.getIpAddr(MemberServiceImpl.getRequest()),
+							MemberServiceImpl.getRequest().getRequestURI(), "增加订单信息", "增加", "增加订单信息成功", new Date()));
+				} else {
 					operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), member.getMemberNo(),
-							member.getRealname(), IPUtils.getIpAddr(MemberServiceImpl.getRequest()), MemberServiceImpl.getRequest().getRequestURI(), "增加订单信息",
-							"增加", "增加订单信息失败", new Date()));
+							member.getRealname(), IPUtils.getIpAddr(MemberServiceImpl.getRequest()),
+							MemberServiceImpl.getRequest().getRequestURI(), "增加订单信息", "增加", "增加订单信息失败", new Date()));
 				}
 			}
-		}else {
+		} else {
 			operationLogService.addOperationLog(new OperationLog(UUIDUtils.getUUID(), member.getMemberNo(),
-					member.getRealname(), IPUtils.getIpAddr(MemberServiceImpl.getRequest()), MemberServiceImpl.getRequest().getRequestURI(), "增加订单",
-					"增加", "增加订单失败", new Date()));
+					member.getRealname(), IPUtils.getIpAddr(MemberServiceImpl.getRequest()),
+					MemberServiceImpl.getRequest().getRequestURI(), "增加订单", "增加", "增加订单失败", new Date()));
 		}
-		
+
 		return true;
 	}
 
-	
 	@Override
-	public List<Map<String, Object>> selectCount(String year,String item) {
-		Map<String, Object> map=new HashMap<String, Object>();
-		List<Map<String, Object>> m=new ArrayList<Map<String,Object>>();
+	public List<Map<String, Object>> selectCount(String year, String item) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Map<String, Object>> m = new ArrayList<Map<String, Object>>();
 		map.put("year", year);
-		int start=0;
-		int end=0;
-		if(item.equals("0")) {
-			start=1;
-			end=6;
-		}else if(item.equals("6")) {
-			start=7;
-			end=12;
-		}else if(item.equals("12")) {
-			start=1;
-			end=12;
+		int start = 0;
+		int end = 0;
+		if (item.equals("0")) {
+			start = 1;
+			end = 6;
+		} else if (item.equals("6")) {
+			start = 7;
+			end = 12;
+		} else if (item.equals("12")) {
+			start = 1;
+			end = 12;
 		}
-		
-		int i=0;
-		int count=0;
-		for(i=start;i<=end;i++) {
+
+		int i = 0;
+		int count = 0;
+		for (i = start; i <= end; i++) {
 			map.put("month", i);
-			count=ordersMapper.selectCount(map);
-			Map<String, Object> ret=new HashMap<String, Object>();
+			count = ordersMapper.selectCount(map);
+			Map<String, Object> ret = new HashMap<String, Object>();
 			ret.put("month", i);
 			ret.put("data", count);
 			m.add(ret);
 		}
 		return m;
+	}
+
+	/**
+	 * <B>概要说明：取消订单</B><BR>
+	 * 
+	 * @see com.dada.service.IOrdersService#removeOrder(java.lang.String)
+	 */
+	@Override
+	public boolean removeOrder(Orders order) {
+		// TODO Auto-generated method stub
+		order.setIsDeleted(true);
+		if (ordersMapper.updateStatus(order) > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
