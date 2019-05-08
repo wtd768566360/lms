@@ -97,19 +97,26 @@ public class MemberServiceImpl implements IMemberService {
 		if (memberList.size() > 0) {
 			// 判断密码是否正确
 			Member member = memberList.get(0);
-			if (member.getPassword().equals(password)) {
-				session.setAttribute("member", member);
-				Member updateMember = new Member(null, member_no, null, null, null, null, null, null, null,
-						IPUtils.getIpAddr(getRequest()), new Date(), null, null, null, null, null, null, null);
-				memberMapper.updateLastTime(updateMember);
-				loginLogService.addLoginLog(new LoginLog(UUIDUtils.getUUID(), IPUtils.getIpAddr(getRequest()),
-						member.getMemberNo(), member.getRealname(), new Date(), getRequest().getRequestURI(), "登录",
-						"查询", "登录成功", "登录成功"));
-				return member;
+			if (member.getToken() != "2" && member.getToken() != "3") {
+				if (member.getPassword().equals(password)) {
+					session.setAttribute("member", member);
+					Member updateMember = new Member(null, member_no, null, null, null, null, null, null, null,
+							IPUtils.getIpAddr(getRequest()), new Date(), null, null, null, null, null, null, null);
+					memberMapper.updateLastTime(updateMember);
+					loginLogService.addLoginLog(new LoginLog(UUIDUtils.getUUID(), IPUtils.getIpAddr(getRequest()),
+							member.getMemberNo(), member.getRealname(), new Date(), getRequest().getRequestURI(), "登录",
+							"查询", "登录成功", "登录成功"));
+					return member;
+				} else {
+					loginLogService.addLoginLog(new LoginLog(UUIDUtils.getUUID(), IPUtils.getIpAddr(getRequest()),
+							member.getMemberNo(), member.getRealname(), new Date(), getRequest().getRequestURI(), "登录",
+							"查询", "登录失败", "密码错误"));
+				}
+
 			} else {
 				loginLogService.addLoginLog(new LoginLog(UUIDUtils.getUUID(), IPUtils.getIpAddr(getRequest()),
 						member.getMemberNo(), member.getRealname(), new Date(), getRequest().getRequestURI(), "登录",
-						"查询", "登录失败", "密码错误"));
+						"查询", "登录失败", "没有权限"));
 			}
 		} else {
 			loginLogService.addLoginLog(new LoginLog(UUIDUtils.getUUID(), IPUtils.getIpAddr(getRequest()), null, null,
@@ -421,6 +428,7 @@ public class MemberServiceImpl implements IMemberService {
 	/**
 	 * <B>方法名称：</B><BR>
 	 * <B>概要说明：</B><BR>
+	 * 
 	 * @see com.dada.service.IMemberService#memberCount()
 	 */
 	@Override

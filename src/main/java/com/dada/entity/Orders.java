@@ -328,7 +328,7 @@ public class Orders implements Serializable{
     }
 
     /**
-     * 订单状态:0-待发货、1-已发货、2-已完成
+     * 订单状态:0-待发货、1-已发货、2-已完成 3取消订单
      * @return status 订单状态:0-待发货、1-已发货、2-已完成
      */
     public Integer getStatus() {
